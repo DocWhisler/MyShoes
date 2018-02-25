@@ -9,8 +9,11 @@ import java.util.ArrayList;
 public class ShoeDaoImpl implements ShoeDao {
 
     private ArrayList<Shoe> allShoes;
+    private DataBaseHandler dbHandler;
 
     public ShoeDaoImpl() {
+
+
     }
 
     @Override
@@ -19,7 +22,7 @@ public class ShoeDaoImpl implements ShoeDao {
     }
 
     @Override
-    public Shoe getShoe(long id) {
+    public Shoe getShoe(int id) {
         return null;
     }
 

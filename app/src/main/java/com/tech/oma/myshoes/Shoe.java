@@ -6,7 +6,7 @@ package com.tech.oma.myshoes;
 
 public class Shoe {
 
-    private long id;
+    private int id;
 
     private String titel;
 
@@ -17,11 +17,11 @@ public class Shoe {
     private String art;
 
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

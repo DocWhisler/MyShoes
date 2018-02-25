@@ -10,7 +10,7 @@ public interface ShoeDao {
 
     public ArrayList<Shoe> getAllShoes();
 
-    public Shoe getShoe(long id);
+    public Shoe getShoe(int id);
 
     public void createShoe(Shoe shoe);
 
