@@ -74,19 +74,25 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
     @Override
     public Shoe getShoe(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
+        Shoe shoe = null;
+        try {
+            Cursor cursor = db.query(TABLE_SHOES,
+                    new String[]{KEY_ID, KEY_TITEL, KEY_DESCRIPTION, KEY_IMAGEPATH, KEY_art},
+                    KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
 
-        Cursor cursor = db.query(TABLE_SHOES,
-                new String[] {KEY_ID, KEY_TITEL, KEY_DESCRIPTION, KEY_IMAGEPATH, KEY_art},
-                KEY_ID + "=?", new String[] {String.valueOf(id)}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
 
-        if(cursor != null)
-            cursor.moveToFirst();
+            shoe = new Shoe(Integer.parseInt(cursor.getString(0)),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4));
+        }finally {
+            db.close();
+        }
 
-        return new Shoe(Integer.parseInt(cursor.getString(0)),
-                            cursor.getString(1),
-                            cursor.getString(2),
-                            cursor.getString(3),
-                            cursor.getString(4));
+        return shoe;
     }
 
     @Override
