@@ -16,6 +16,13 @@ public class Shoe {
 
     private String art;
 
+    public Shoe(int id, String titel, String description, String imagePath, String art) {
+        this.id = id;
+        this.titel = titel;
+        this.description = description;
+        this.imagePath = imagePath;
+        this.art = art;
+    }
 
     public int getId() {
         return id;

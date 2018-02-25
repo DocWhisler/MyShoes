@@ -1,6 +1,8 @@
 package com.tech.oma.myshoes;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -53,20 +55,61 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
         onCreate(db);
     }
 
-
     @Override
     public void addShoe(Shoe shoe) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        // Werte lesen
+        ContentValues values = new ContentValues();
+        values.put(KEY_TITEL, shoe.getTitel());
+        values.put(KEY_DESCRIPTION, shoe.getDescription());
+        values.put(KEY_IMAGEPATH, shoe.getImagePath());
+        values.put(KEY_art, shoe.getArt());
+
+        // Werte einfügen
+        db.insert(TABLE_SHOES, null, values);
+        db.close();
     }
 
     @Override
     public Shoe getShoe(int id) {
-        return null;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_SHOES,
+                new String[] {KEY_ID, KEY_TITEL, KEY_DESCRIPTION, KEY_IMAGEPATH, KEY_art},
+                KEY_ID + "=?", new String[] {String.valueOf(id)}, null, null, null, null);
+
+        if(cursor != null)
+            cursor.moveToFirst();
+
+        return new Shoe(Integer.parseInt(cursor.getString(0)),
+                            cursor.getString(1),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getString(4));
     }
 
     @Override
     public ArrayList<Shoe> getAllShoes() {
-        return null;
+        ArrayList<Shoe> shoes = new ArrayList<Shoe>();
+        String query = "SELECT * FROM " + TABLE_SHOES;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                Shoe shoe = new Shoe(Integer.parseInt(cursor.getString(0)),
+                                        cursor.getString(1),
+                                        cursor.getString(2),
+                                        cursor.getString(3),
+                                        cursor.getString(4));
+
+                shoes.add(shoe);
+            }while (cursor.moveToNext());
+        }
+
+        return shoes;
     }
 
     @Override
