@@ -57,9 +57,8 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
 
     @Override
     public void addShoe(Shoe shoe) {
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        try{
+        try (SQLiteDatabase db = this.getWritableDatabase()) {
             // Werte lesen
             ContentValues values = new ContentValues();
             values.put(KEY_TITEL, shoe.getTitel());
@@ -69,30 +68,26 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
 
             // Werte einfügen
             db.insert(TABLE_SHOES, null, values);
-        }finally {
-            db.close();
         }
     }
 
     @Override
     public Shoe getShoe(int id) {
         Shoe shoe = null;
-        SQLiteDatabase db = this.getReadableDatabase();
-        try {
-            Cursor cursor = db.query(TABLE_SHOES,
+        try (SQLiteDatabase db = this.getReadableDatabase()) {
+            try (Cursor cursor = db.query(TABLE_SHOES,
                     new String[]{KEY_ID, KEY_TITEL, KEY_DESCRIPTION, KEY_IMAGEPATH, KEY_art},
-                    KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
+                    KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null)) {
 
-            if (cursor != null)
-                cursor.moveToFirst();
+                if (cursor != null)
+                    cursor.moveToFirst();
 
-            shoe = new Shoe(Integer.parseInt(cursor.getString(0)),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4));
-        } finally {
-            db.close();
+                shoe = new Shoe(Integer.parseInt(cursor.getString(0)),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4));
+            }
         }
 
         return shoe;
@@ -123,13 +118,10 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
 
     @Override
     public int getShoesCount() {
-        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
-        try {
+        try (SQLiteDatabase db = this.getReadableDatabase()) {
             String countQuery = "SELECT * FROM " + TABLE_SHOES;
             cursor = db.rawQuery(countQuery, null);
-        }finally {
-            db.close();
         }
 
         if (cursor != null) {
@@ -142,26 +134,20 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
     @Override
     public void updateShoe(Shoe shoe) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
+        try (SQLiteDatabase db = this.getWritableDatabase()) {
             ContentValues values = new ContentValues();
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
             values.put(KEY_art, shoe.getArt());
             db.update(TABLE_SHOES, values, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
-        } finally {
-            db.close();
         }
     }
 
     @Override
     public void deleteShoe(Shoe shoe) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            db.delete(TABLE_SHOES, KEY_ID + " = ?", new String[] { String.valueOf(shoe.getId())});
-        }finally {
-            db.close();
+        try (SQLiteDatabase db = this.getWritableDatabase()) {
+                db.delete(TABLE_SHOES, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
         }
     }
 }
