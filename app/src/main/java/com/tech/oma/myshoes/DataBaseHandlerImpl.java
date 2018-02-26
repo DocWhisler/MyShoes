@@ -21,7 +21,7 @@ public interface DataBaseHandlerImpl {
     public int getShoesCount();
 
     // Updating single Shoe
-    public int updateShoe(Shoe shoe);
+    public void updateShoe(Shoe shoe);
 
     // Deleting single Shoe
     public void deleteShoe(Shoe shoe);
