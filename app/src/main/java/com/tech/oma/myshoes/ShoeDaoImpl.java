@@ -11,15 +11,13 @@ import java.util.ArrayList;
 public class ShoeDaoImpl implements ShoeDao {
 
     private DataBaseHandler dbHandler;
-    private Context context;
 
     public ShoeDaoImpl(Context context) {
-        this.context = context;
         this.dbHandler = new DataBaseHandler(context);
     }
 
     @Override
-    public ArrayList<Shoe> getAllShoes() {
+    public ArrayList<Shoe> getShoes() {
         return this.dbHandler.getAllShoes();
     }
 

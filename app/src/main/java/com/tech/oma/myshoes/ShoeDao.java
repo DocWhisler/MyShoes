@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public interface ShoeDao {
 
-    public ArrayList<Shoe> getAllShoes();
+    public ArrayList<Shoe> getShoes();
 
     public Shoe getShoe(int id);
 
