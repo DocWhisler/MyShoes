@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             ViewGroup container = (ViewGroup) inflater.inflate(R.layout.popupwindow__layout, null);
 
             final PopupWindow popupWindow = new PopupWindow(container, 400, 400, true);
-            popupWindow.showAtLocation(mCoordianteLayout, Gravity., 500, 500);
+            popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, 500, 500);
 
             container.setOnTouchListener(new View.OnTouchListener() {
                 @Override
