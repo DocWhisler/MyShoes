@@ -2,6 +2,7 @@ package com.tech.oma.myshoes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -23,9 +24,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Shoe> shoes ;
     private Context mContext;
-    private Activity mainActivity;
-    private RelativeLayout popUpWindowLayout;
-    private PopupWindow mPopupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,54 +34,17 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
 
-        // was man so braucht....
-        this.mContext = this.getApplicationContext();
-        this.mainActivity = MainActivity.this;
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             // Android PopUp Window
-            // https://android--code.blogspot.de/2016/01/android-popup-window-example.html
-                // Initialize a new instance of LayoutInflater service
-                LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+            startActivity(new Intent(MainActivity.this, PopUpWindow_Activity.class));
 
-                // Inflate the custom layout/view
-                popUpWindowLayout = (RelativeLayout)findViewById(R.id.popupwindow_layout);
-                View popUpWindow = inflater.inflate(R.layout.popupwindow__layout,null);
 
-                // Initialize a new instance of popup window
-                mPopupWindow = new PopupWindow(
-                        popUpWindow,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                );
-
-                // Set an elevation value for popup window
-                // Call requires API level 21
-                if(Build.VERSION.SDK_INT>=21){
-                    mPopupWindow.setElevation(5.0f);
-                }
-
-                // Get a reference for the custom view close button
-                ImageButton closeButton = (ImageButton) popUpWindow.findViewById(R.id.ib_close);
-
-                // Set a click listener for the popup window close button
-                closeButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        // Dismiss the popup window
-                        mPopupWindow.dismiss();
-                    }
-                });
-
-                // Finally, show the popup window at the center location of root relative layout
-                mPopupWindow.showAtLocation(popUpWindowLayout, Gravity.CENTER,0,0);
-
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
             }
         });
 
