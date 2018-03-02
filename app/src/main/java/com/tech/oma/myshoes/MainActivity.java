@@ -51,15 +51,20 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // PopUpWindow initialising
-            final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
             DisplayMetrics dm = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(dm);
             int width = dm.widthPixels;
             int height = dm.heightPixels;
-            popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, (int) (width*0.8), (int) (height*0.5));
+
+            final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            popupWindow.setWidth((int) (width*.7));
+            popupWindow.setHeight((int) (height*.6));
+
+            popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, 0, 0);
             popupWindow.setOutsideTouchable(true);
 
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            //    .setAction("Action", null).show();
             }
         });
     }
