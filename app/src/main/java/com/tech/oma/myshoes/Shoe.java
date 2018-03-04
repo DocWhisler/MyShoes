@@ -1,10 +1,14 @@
 package com.tech.oma.myshoes;
 
+import java.util.Calendar;
+
 /**
  * Created by Whisler on 25.02.2018.
  */
 
 public class Shoe {
+
+    private String oid;
 
     private int id;
 
