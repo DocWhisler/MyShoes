@@ -11,52 +11,66 @@
     android:visibility="visible">
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/closeBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editText"
+        android:layout_alignEnd="@+id/editTitel"
         android:layout_alignParentTop="true"
         android:layout_marginTop="50dp"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/takePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageButton"
+        android:layout_below="@+id/close"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageButton2"
+        android:layout_below="@+id/takePhoto"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:text="@string/titel" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_below="@+id/editText"
+        android:layout_alignEnd="@+id/editTitel"
+        android:layout_below="@+id/editTitel"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:selectAllOnFocus="true"
+        android:text="@string/description" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/editArt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_below="@+id/editText2"
+        android:layout_alignStart="@+id/editDescription"
+        android:layout_below="@+id/editDescription"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:text="@string/art" />
+
+    <TextView
+        android:id="@+id/okBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/editArt"
+        android:layout_below="@+id/editArt"
+        android:layout_marginTop="24dp"
+        android:text="@string/ok" />
 </RelativeLayout>

@@ -14,7 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -37,34 +39,65 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
 
+        // Create ShoeList
+        // TODO Custom ListView with shoes
+
+        // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
         fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                // Android PopUp Window
+                inflater = (LayoutInflater)mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+                ViewGroup container= null;
+                if(inflater != null) {
+                    container = (ViewGroup) inflater.inflate(R.layout.popupwindow__layout, null);
+                    createPopUpWindow(container);
+                }
+            }
+        });
+    }
+
+    private void createPopUpWindow(ViewGroup container) {
+        // PopUpWindow initialising
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+
+        final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setWidth((int) (width*.7));
+        popupWindow.setHeight((int) (height*.6));
+
+        popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, 0, 0);
+        popupWindow.setOutsideTouchable(true);
+
+        // Close Button
+        ImageButton ibClose = container.findViewById(R.id.closeBtn);
+        ibClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-            // Android PopUp Window
-            inflater = (LayoutInflater)mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-            ViewGroup container= null;
-            if(inflater != null) {
-                container = (ViewGroup) inflater.inflate(R.layout.popupwindow__layout, null);
+                popupWindow.dismiss();
             }
+        });
 
-            // PopUpWindow initialising
-            DisplayMetrics dm = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(dm);
-            int width = dm.widthPixels;
-            int height = dm.heightPixels;
+        // Take Photo
+        ImageButton ibTakePhoto = container.findViewById(R.id.takePhoto);
+        ibTakePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO Photo machen
+            }
+        });
 
-            final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-            popupWindow.setWidth((int) (width*.7));
-            popupWindow.setHeight((int) (height*.6));
-
-            popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, 0, 0);
-            popupWindow.setOutsideTouchable(true);
-
-            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            //    .setAction("Action", null).show();
+        TextView ok = container.findViewById(R.id.okBtn);
+        ok.setClickable(true);
+        ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
             }
         });
     }
