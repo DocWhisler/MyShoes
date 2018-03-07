@@ -17,15 +17,22 @@
         android:layout_alignEnd="@+id/editTitel"
         android:layout_alignParentTop="true"
         android:layout_marginTop="50dp"
+        android:visibility="visible"
         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/takePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/close"
+        android:layout_below="@+id/closeBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="48dp"
+        android:adjustViewBounds="false"
+        android:background="@android:color/black"
+        android:clickable="true"
+        android:cropToPadding="false"
+        android:focusable="true"
+        android:scaleType="center"
         android:visibility="visible"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
@@ -72,5 +79,7 @@
         android:layout_alignEnd="@+id/editArt"
         android:layout_below="@+id/editArt"
         android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:focusable="true"
         android:text="@string/ok" />
 </RelativeLayout>

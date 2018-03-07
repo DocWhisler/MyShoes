@@ -2,6 +2,8 @@ package com.tech.oma.myshoes;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -36,11 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout mCoordianteLayout;
     private LayoutInflater inflater;
     private String mCurrentPhotoPath;
+    private File photoFile;
 
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_TAKE_PHOTO = 1;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setWidth((int) (width*.7));
-        popupWindow.setHeight((int) (height*.6));
+        popupWindow.setHeight((int) (height*.7));
 
         popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, 0, 0);
         popupWindow.setOutsideTouchable(true);
@@ -99,17 +101,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Take Photo
-        ImageButton ibTakePhoto = container.findViewById(R.id.takePhoto);
+        final ImageView ibTakePhoto = container.findViewById(R.id.takePhoto);
         ibTakePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dispatchTakePictureIntent();
+                photoFile = dispatchTakePictureIntent();
                 galleryAddPic();
+                setPic(ibTakePhoto);
             }
         });
 
         TextView ok = container.findViewById(R.id.okBtn);
-        ok.setClickable(true);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,8 +120,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /* TODO erst foto testen
-    private void setPic() {
+    // TODO erst foto testen
+    private void setPic(ImageView mImageView) {
         // Get the dimensions of the View
         int targetW = mImageView.getWidth();
         int targetH = mImageView.getHeight();
@@ -142,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);
     }
-    */
 
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         this.sendBroadcast(mediaScanIntent);
     }
 
-    private void dispatchTakePictureIntent() {
+    private File dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         // Ensure that there's a camera activity to handle the intent
@@ -172,7 +173,9 @@ public class MainActivity extends AppCompatActivity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
+            return photoFile;
         }
+        return null;
     }
 
     private File createImageFile() throws IOException {
@@ -187,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
+        this.mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
