@@ -5,4 +5,6 @@
     <string name="description">Beschreibung</string>
     <string name="art">Art</string>
     <string name="ok">OK</string>
+    <string name="closebutton">closeButton</string>
+    <string name="takephoto">takePhoto</string>
 </resources>
