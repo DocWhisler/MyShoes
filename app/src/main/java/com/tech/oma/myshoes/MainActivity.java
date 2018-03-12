@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private File photoFile;
 
-    private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_TAKE_PHOTO = 1;
 
     @Override
@@ -89,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         popupWindow.setHeight((int) (height*.7));
 
         popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOutsideTouchable(true);
+        popupWindow.setOutsideTouchable(false);
 
         // Close Button
         ImageButton ibClose = container.findViewById(R.id.closeBtn);
@@ -100,14 +99,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Take Photo
-        final ImageView ibTakePhoto = container.findViewById(R.id.takePhoto);
-        ibTakePhoto.setOnClickListener(new View.OnClickListener() {
+        // Capture Photo
+        final ImageView photoView = container.findViewById(R.id.photoView);
+        TextView capture = container.findViewById(R.id.capturePhoto);
+        capture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 photoFile = dispatchTakePictureIntent();
-                galleryAddPic();
-                setPic(ibTakePhoto);
+                setPic(photoView);
             }
         });
 
@@ -115,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //savePhoto()
+                //galleryAddPic();
+
                 popupWindow.dismiss();
             }
         });
@@ -139,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);

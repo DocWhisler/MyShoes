@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/popupwindow_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,25 +16,23 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:backgroundTint="@android:color/transparent"
-        android:contentDescription="@string/closebutton"
+        android:contentDescription="@string/close_button"
         android:tint="@android:color/black"
         android:visibility="visible"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
     <ImageView
-        android:id="@+id/takePhoto"
+        android:id="@+id/photoView"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/closeBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="53dp"
         android:adjustViewBounds="true"
-        android:background="@android:color/black"
-        android:clickable="true"
-        android:contentDescription="@string/takephoto"
-        android:focusable="true"
+        android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:src="@android:drawable/ic_menu_camera"
+        android:contentDescription="@string/popout_photo_view"
         android:visibility="visible" />
 
     <EditText
@@ -85,6 +81,15 @@
         android:layout_marginBottom="27dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="@string/ok"
-        tools:text="@string/ok" />
+        android:text="@string/ok" />
+
+    <TextView
+        android:id="@+id/capturePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/photoView"
+        android:layout_below="@+id/editArt"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/capture" />
 </RelativeLayout>
