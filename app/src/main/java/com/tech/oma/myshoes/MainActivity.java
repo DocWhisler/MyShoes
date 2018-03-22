@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void createPopUpWindow(ViewGroup container) {
+    private void createPopUpWindow(final ViewGroup container) {
         // PopUpWindow initialising
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -119,8 +120,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-//                savePhoto();
-//                galleryAddPic();
+                TextView tvTitel = container.findViewById(R.id.editTitel);
+                String titel = tvTitel.getText().toString();
+
+                TextView tvDescription = container.findViewById(R.id.editDescription);
+                String decription = tvDescription.getText().toString();
+
+                TextView tvArt = container.findViewById(R.id.editArt);
+                String art = tvArt.getText().toString();
+
+                EditText tvPrice = container.findViewById(R.id.editPrice);
+                String priceStr = tvPrice.getText().toString();
+
+                double price = 0.0;
+                if(!priceStr.isEmpty()){
+                    price = Double.parseDouble(priceStr);
+                }
+
+                Shoe shoe = new Shoe(1,titel, decription, mCurrentPhotoPath, art, price);
+
+                savePhoto();
 
                 popupWindow.dismiss();
             }
@@ -129,18 +148,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void savePhoto() {
         File photo = this.photoFile;
-        String path = this.mCurrentPhotoPath;
-
         OutputStream fOutputStream = null;
+
         try {
             fOutputStream = new FileOutputStream(photo);
-
-            // Bitmap CapturedBitmap
-            // CapturedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
 
             fOutputStream.flush();
             fOutputStream.close();
 
+            // Add Phosto to gallery
             galleryAddPic(photo);
             Toast.makeText(this, "Save successful", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
