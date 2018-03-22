@@ -9,20 +9,20 @@ import java.util.ArrayList;
 public interface DataBaseHandlerImpl {
 
     // Adding new Shoe
-    public void addShoe(Shoe shoe);
+    void addShoe(Shoe shoe);
 
     // Getting single Shoe
-    public Shoe getShoe(int id);
+    Shoe getShoe(int id);
 
     // Getting All Shoes
-    public ArrayList<Shoe> getAllShoes();
+    ArrayList<Shoe> getAllShoes();
 
     // Getting Shoe Count
-    public int getShoesCount();
+    int getShoesCount();
 
     // Updating single Shoe
-    public void updateShoe(Shoe shoe);
+    void updateShoe(Shoe shoe);
 
     // Deleting single Shoe
-    public void deleteShoe(Shoe shoe);
+    void deleteShoe(Shoe shoe);
 }

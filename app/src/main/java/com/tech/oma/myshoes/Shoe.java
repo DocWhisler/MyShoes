@@ -20,12 +20,15 @@ public class Shoe {
 
     private String art;
 
-    public Shoe(int id, String titel, String description, String imagePath, String art) {
+    private double price;
+
+    public Shoe(int id, String titel, String description, String imagePath, String art, double price) {
         this.id = id;
         this.titel = titel;
         this.description = description;
         this.imagePath = imagePath;
         this.art = art;
+        this.price = price;
     }
 
     public int getId() {
@@ -66,5 +69,13 @@ public class Shoe {
 
     public void setArt(String art) {
         this.art = art;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

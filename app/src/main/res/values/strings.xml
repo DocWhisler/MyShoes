@@ -8,4 +8,5 @@
     <string name="close_button">closeButton</string>
     <string name="popout_photo_view">takePhoto</string>
     <string name="capture">Capture</string>
+    <string name="price">Preis</string>
 </resources>

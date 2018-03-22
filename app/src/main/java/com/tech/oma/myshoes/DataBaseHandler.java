@@ -29,7 +29,8 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
     private static final String KEY_TITEL = "titel";
     private static final String KEY_DESCRIPTION = "description";
     private static final String KEY_IMAGEPATH = "imagePath";
-    private static final String KEY_art = "art";
+    private static final String KEY_ART = "art";
+    private static final String KEY_PRICE = "price";
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -42,7 +43,8 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
                 + KEY_TITEL + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT,"
                 + KEY_IMAGEPATH + " TEXT,"
-                + KEY_art + "TEXT)";
+                + KEY_ART + "TEXT,"
+                + KEY_PRICE + "REAL)";
         db.execSQL(CREATE_SHOES_TABLE);
     }
 
@@ -64,7 +66,8 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
-            values.put(KEY_art, shoe.getArt());
+            values.put(KEY_ART, shoe.getArt());
+            values.put(KEY_PRICE, shoe.getImagePath());
 
             // Werte einfügen
             db.insert(TABLE_SHOES, null, values);
@@ -76,17 +79,19 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
         Shoe shoe = null;
         try (SQLiteDatabase db = this.getReadableDatabase()) {
             try (Cursor cursor = db.query(TABLE_SHOES,
-                    new String[]{KEY_ID, KEY_TITEL, KEY_DESCRIPTION, KEY_IMAGEPATH, KEY_art},
+                    new String[]{KEY_ID, KEY_TITEL, KEY_DESCRIPTION, KEY_IMAGEPATH, KEY_ART, KEY_PRICE},
                     KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null)) {
 
                 if (cursor != null)
                     cursor.moveToFirst();
 
-                shoe = new Shoe(Integer.parseInt(cursor.getString(0)),
+                shoe = new Shoe(
+                        cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3),
-                        cursor.getString(4));
+                        cursor.getString(4),
+                        cursor.getDouble(5));
             }
         }
 
@@ -103,11 +108,13 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
 
         if(cursor.moveToFirst()) {
             do {
-                Shoe shoe = new Shoe(Integer.parseInt(cursor.getString(0)),
-                                        cursor.getString(1),
-                                        cursor.getString(2),
-                                        cursor.getString(3),
-                                        cursor.getString(4));
+                Shoe shoe = new Shoe(
+                                cursor.getInt(0),
+                                cursor.getString(1),
+                                cursor.getString(2),
+                                cursor.getString(3),
+                                cursor.getString(4),
+                                cursor.getDouble(5));
 
                 shoes.add(shoe);
             }while (cursor.moveToNext());
@@ -139,7 +146,8 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
-            values.put(KEY_art, shoe.getArt());
+            values.put(KEY_ART, shoe.getArt());
+            values.put(KEY_PRICE, shoe.getPrice());
             db.update(TABLE_SHOES, values, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
         }
     }

@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 public interface ShoeDao {
 
-    public ArrayList<Shoe> getShoes();
+    ArrayList<Shoe> getShoes();
 
-    public Shoe getShoe(int id);
+    Shoe getShoe(int id);
 
-    public void createShoe(Shoe shoe);
+    void createShoe(Shoe shoe);
 
-    public void updateShoe(Shoe shoe);
+    void updateShoe(Shoe shoe);
 
-    public void deleteShoe(Shoe shoe);
+    void deleteShoe(Shoe shoe);
 }

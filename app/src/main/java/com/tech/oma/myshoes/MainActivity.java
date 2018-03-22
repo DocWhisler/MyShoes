@@ -25,9 +25,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,12 +118,40 @@ public class MainActivity extends AppCompatActivity {
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //savePhoto()
-                //galleryAddPic();
+
+//                savePhoto();
+//                galleryAddPic();
 
                 popupWindow.dismiss();
             }
         });
+    }
+
+    private void savePhoto() {
+        File photo = this.photoFile;
+        String path = this.mCurrentPhotoPath;
+
+        OutputStream fOutputStream = null;
+        try {
+            fOutputStream = new FileOutputStream(photo);
+
+            // Bitmap CapturedBitmap
+            // CapturedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOutputStream);
+
+            fOutputStream.flush();
+            fOutputStream.close();
+
+            galleryAddPic(photo);
+            Toast.makeText(this, "Save successful", Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Save Failed", Toast.LENGTH_SHORT).show();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Save Failed", Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
     // TODO erst foto testen
@@ -146,10 +178,9 @@ public class MainActivity extends AppCompatActivity {
         mImageView.setImageBitmap(bitmap);
     }
 
-    private void galleryAddPic() {
+    private void galleryAddPic(File file) {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(mCurrentPhotoPath);
-        Uri contentUri = Uri.fromFile(f);
+        Uri contentUri = Uri.fromFile(file);
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
