@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private LayoutInflater inflater;
     private String mCurrentPhotoPath;
     private File photoFile;
+    private ShoeDaoImpl shoeDao;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -55,12 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
         this.mContext = this.getApplicationContext();
         this.mCoordianteLayout = findViewById(R.id.mainactivity_layout);
+        this.shoeDao = new ShoeDaoImpl(mContext);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
+        shoes = this.shoeDao.getShoes();
         // TODO Custom ListView with shoes
 
         // ADD Button mit öffnen des PopUpWindows
@@ -79,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        Toast.makeText(mContext, "Anz Schuhe " + shoes.size() + "'" , Toast.LENGTH_LONG).show();
     }
 
     private void createPopUpWindow(final ViewGroup container) {
@@ -137,9 +142,12 @@ public class MainActivity extends AppCompatActivity {
                     price = Double.parseDouble(priceStr);
                 }
 
-                Shoe shoe = new Shoe(1,titel, decription, mCurrentPhotoPath, art, price);
-
+                Shoe shoe = shoeDao.createShoe(1, titel, decription, mCurrentPhotoPath, art, price);
+                shoeDao.saveShoe(shoe);
                 savePhoto();
+
+//                Toast.makeText(mContext, "Titel '" + shoe.getTitel() + "' Desc '" + shoe.getDescription() + "' Pfad '" +
+//                        shoe.getImagePath() + "' Art '" + shoe.getArt() + "' Preis '"+ shoe.getPrice() + "'" , Toast.LENGTH_LONG).show();
 
                 popupWindow.dismiss();
             }
@@ -170,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // TODO erst foto testen
     private void setPic(ImageView mImageView) {
         // Get the dimensions of the View
         int targetW = mImageView.getWidth();

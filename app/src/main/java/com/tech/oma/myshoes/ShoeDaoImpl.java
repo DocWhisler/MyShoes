@@ -27,7 +27,12 @@ public class ShoeDaoImpl implements ShoeDao {
     }
 
     @Override
-    public void createShoe(Shoe shoe) {
+    public Shoe createShoe(int id, String titel, String description, String photoPath, String art, double price) {
+       return new Shoe(id, titel, description, photoPath, art, price);
+    }
+
+    @Override
+    public void saveShoe(Shoe shoe) {
         this.dbHandler.addShoe(shoe);
     }
 
