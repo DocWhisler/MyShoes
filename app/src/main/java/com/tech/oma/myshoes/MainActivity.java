@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         // Create ShoeList
         shoes = this.shoeDao.getShoes();
         // TODO Custom ListView with shoes
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(new CustomAdapter(this, shoes));
 
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
@@ -125,33 +128,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                TextView tvTitel = container.findViewById(R.id.editTitel);
-                String titel = tvTitel.getText().toString();
-
-                TextView tvDescription = container.findViewById(R.id.editDescription);
-                String decription = tvDescription.getText().toString();
-
-                TextView tvArt = container.findViewById(R.id.editArt);
-                String art = tvArt.getText().toString();
-
-                EditText tvPrice = container.findViewById(R.id.editPrice);
-                String priceStr = tvPrice.getText().toString();
-
-                double price = 0.0;
-                if(!priceStr.isEmpty()){
-                    price = Double.parseDouble(priceStr);
-                }
-
-                Shoe shoe = shoeDao.createShoe(1, titel, decription, mCurrentPhotoPath, art, price);
+                Shoe shoe = createShoeFromView(container);
                 shoeDao.saveShoe(shoe);
                 savePhoto();
-
-//                Toast.makeText(mContext, "Titel '" + shoe.getTitel() + "' Desc '" + shoe.getDescription() + "' Pfad '" +
-//                        shoe.getImagePath() + "' Art '" + shoe.getArt() + "' Preis '"+ shoe.getPrice() + "'" , Toast.LENGTH_LONG).show();
-
                 popupWindow.dismiss();
             }
         });
+    }
+
+    private Shoe createShoeFromView(ViewGroup container) {
+        TextView tvTitel = container.findViewById(R.id.editTitel);
+        String titel = tvTitel.getText().toString();
+
+        TextView tvDescription = container.findViewById(R.id.editDescription);
+        String decription = tvDescription.getText().toString();
+
+        TextView tvArt = container.findViewById(R.id.editArt);
+        String art = tvArt.getText().toString();
+
+        EditText tvPrice = container.findViewById(R.id.editPrice);
+        String priceStr = tvPrice.getText().toString();
+
+        double price = 0.0;
+        if(!priceStr.isEmpty()){
+            price = Double.parseDouble(priceStr);
+        }
+
+        return shoeDao.createShoe(1, titel, decription, mCurrentPhotoPath, art, price);
     }
 
     private void savePhoto() {
