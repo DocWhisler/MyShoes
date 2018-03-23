@@ -100,5 +100,6 @@
         android:layout_below="@+id/editArt"
         android:ems="10"
         android:inputType="numberDecimal"
+        android:selectAllOnFocus="true"
         android:text="@string/price" />
 </RelativeLayout>

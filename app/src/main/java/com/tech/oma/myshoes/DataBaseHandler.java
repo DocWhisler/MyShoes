@@ -21,10 +21,10 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
     // Database Name
     private static final String DATABASE_NAME = "myShoesManager";
 
-    // Contacts table name
+    // Shoe table name
     private static final String TABLE_SHOES = "shoes";
 
-    // Contacts Table Columns names
+    // Shoe Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_TITEL = "titel";
     private static final String KEY_DESCRIPTION = "description";
@@ -43,8 +43,8 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
                 + KEY_TITEL + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT,"
                 + KEY_IMAGEPATH + " TEXT,"
-                + KEY_ART + "TEXT,"
-                + KEY_PRICE + "REAL)";
+                + KEY_ART + " TEXT,"
+                + KEY_PRICE + " REAL)";
         db.execSQL(CREATE_SHOES_TABLE);
     }
 
