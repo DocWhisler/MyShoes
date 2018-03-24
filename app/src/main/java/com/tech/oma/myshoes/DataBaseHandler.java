@@ -60,9 +60,11 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
     @Override
     public void addShoe(Shoe shoe) {
 
+        int id = this.getId();
         try (SQLiteDatabase db = this.getWritableDatabase()) {
             // Werte lesen
             ContentValues values = new ContentValues();
+            values.put(KEY_ID, id);
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
@@ -156,6 +158,22 @@ public class DataBaseHandler extends SQLiteOpenHelper implements DataBaseHandler
     public void deleteShoe(Shoe shoe) {
         try (SQLiteDatabase db = this.getWritableDatabase()) {
                 db.delete(TABLE_SHOES, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
+        }
+    }
+
+    private int getId(){
+        int id = -1;
+        Cursor cursor = null;
+
+        try (SQLiteDatabase db = this.getReadableDatabase()) {
+            String countQuery = "SELECT id FROM " + TABLE_SHOES + " ORDER BY id";
+            cursor = db.rawQuery(countQuery, null);
+        }
+
+        if (cursor != null) {
+            return cursor.getInt(0)+1;
+        } else {
+            return 1;
         }
     }
 }
