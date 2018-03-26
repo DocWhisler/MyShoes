@@ -19,4 +19,6 @@ public interface ShoeDao {
     void updateShoe(Shoe shoe);
 
     void deleteShoe(Shoe shoe);
+
+    int getMaxId();
 }

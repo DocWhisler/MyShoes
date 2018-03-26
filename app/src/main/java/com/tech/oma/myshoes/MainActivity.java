@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private File photoFile;
     private ShoeDaoImpl shoeDao;
+    private int shoeId;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -58,13 +59,14 @@ public class MainActivity extends AppCompatActivity {
         this.mContext = this.getApplicationContext();
         this.mCoordianteLayout = findViewById(R.id.mainactivity_layout);
         this.shoeDao = new ShoeDaoImpl(mContext);
+        this.shoes = this.shoeDao.getShoes();
+        this.shoeId = this.shoeDao.getMaxId();
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
-        shoes = this.shoeDao.getShoes();
         // TODO Custom ListView with shoes
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(new CustomAdapter(this, shoes));

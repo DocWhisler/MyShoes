@@ -10,20 +10,21 @@ import java.util.ArrayList;
 
 public class ShoeDaoImpl implements ShoeDao {
 
-    private DataBaseHandler dbHandler;
+    private DataBaseHandlerImpl dbHandlerinstance;
 
     public ShoeDaoImpl(Context context) {
-        this.dbHandler = new DataBaseHandler(context);
+
+        this.dbHandlerinstance = new DataBaseHandlerImpl(context);
     }
 
     @Override
     public ArrayList<Shoe> getShoes() {
-        return this.dbHandler.getAllShoes();
+        return this.dbHandlerinstance.getAllShoes();
     }
 
     @Override
     public Shoe getShoe(int id) {
-        return this.dbHandler.getShoe(id);
+        return this.dbHandlerinstance.getShoe(id);
     }
 
     @Override
@@ -33,16 +34,21 @@ public class ShoeDaoImpl implements ShoeDao {
 
     @Override
     public void saveShoe(Shoe shoe) {
-        this.dbHandler.addShoe(shoe);
+        this.dbHandlerinstance.addShoe(shoe);
     }
 
     @Override
     public void updateShoe(Shoe shoe) {
-        this.dbHandler.updateShoe(shoe);
+        this.dbHandlerinstance.updateShoe(shoe);
     }
 
     @Override
     public void deleteShoe(Shoe shoe) {
-        this.dbHandler.deleteShoe(shoe);
+        this.dbHandlerinstance.deleteShoe(shoe);
+    }
+
+    @Override
+    public int getMaxId() {
+        return this.dbHandlerinstance.getMaxId();
     }
 }
