@@ -12,9 +12,17 @@ public class ShoeDaoImpl implements ShoeDao {
 
     private DataBaseHandlerImpl dbHandlerinstance;
 
-    public ShoeDaoImpl(Context context) {
+    private static ShoeDaoImpl shoeDaoInstance;
 
-        this.dbHandlerinstance = new DataBaseHandlerImpl(context);
+    private ShoeDaoImpl(Context context) {
+        this.dbHandlerinstance = DataBaseHandlerImpl.getDbHandlerInstance(context);
+    }
+
+    public static ShoeDao getShoeDaoInstance(Context context){
+        if (shoeDaoInstance == null){
+            shoeDaoInstance = new ShoeDaoImpl(context);
+        }
+        return shoeDaoInstance;
     }
 
     @Override

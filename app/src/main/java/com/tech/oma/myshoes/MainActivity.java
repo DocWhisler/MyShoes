@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private LayoutInflater inflater;
     private String mCurrentPhotoPath;
     private File photoFile;
-    private ShoeDaoImpl shoeDao;
+    private ShoeDao shoeDao;
     private int shoeId;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.mContext = this.getApplicationContext();
         this.mCoordianteLayout = findViewById(R.id.mainactivity_layout);
-        this.shoeDao = new ShoeDaoImpl(mContext);
+        this.shoeDao = ShoeDaoImpl.getShoeDaoInstance(mContext);
         this.shoes = this.shoeDao.getShoes();
         this.shoeId = this.shoeDao.getMaxId();
 
@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity {
         popupWindow.setHeight((int) (height*.7));
 
         popupWindow.showAtLocation(mCoordianteLayout, Gravity.CENTER, 0, 0);
-        popupWindow.setOutsideTouchable(false);
 
         // Close Button
         ImageButton ibClose = container.findViewById(R.id.closeBtn);
@@ -155,7 +154,6 @@ public class MainActivity extends AppCompatActivity {
         if(!priceStr.isEmpty()){
             price = Double.parseDouble(priceStr);
         }
-
         return shoeDao.createShoe(1, titel, decription, mCurrentPhotoPath, art, price);
     }
 
