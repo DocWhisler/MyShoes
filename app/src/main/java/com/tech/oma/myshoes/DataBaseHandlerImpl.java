@@ -75,35 +75,29 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
 
     @Override
     public void addShoe(Shoe shoe) {
-        // Werte lesen
-        ContentValues values = new ContentValues();
-        values.put(KEY_ID, shoe.getId());
-        values.put(KEY_TITEL, shoe.getTitel());
-        values.put(KEY_DESCRIPTION, shoe.getDescription());
-        values.put(KEY_IMAGEPATH, shoe.getImagePath());
-        values.put(KEY_ART, shoe.getArt());
-        values.put(KEY_PRICE, shoe.getImagePath());
+        if(writableDatabase.isOpen()){
+            ContentValues values = new ContentValues();
+            values.put(KEY_ID, shoe.getId());
+            values.put(KEY_TITEL, shoe.getTitel());
+            values.put(KEY_DESCRIPTION, shoe.getDescription());
+            values.put(KEY_IMAGEPATH, shoe.getImagePath());
+            values.put(KEY_ART, shoe.getArt());
+            values.put(KEY_PRICE, shoe.getImagePath());
 
-        if(!writableDatabase.isOpen()){
-            try (SQLiteDatabase db = this.getWritableDatabase()) {
-                // Werte einfügen
-                db.insert(TABLE_SHOES, null, values);
-            }
+            writableDatabase.insert(TABLE_SHOES, null, values);
         }
-        else
-        {
-
+        else{
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
         }
-
-
     }
 
     @Override
     public Shoe getShoe(int id) {
         Shoe shoe = null;
 
-        try (SQLiteDatabase db = this.getReadableDatabase()) {
-            try (Cursor cursor = db.query(TABLE_SHOES,
+        if (readableDatabase.isOpen()) {
+            try (Cursor cursor = readableDatabase.query(TABLE_SHOES,
                     new String[]{KEY_ID, KEY_TITEL, KEY_DESCRIPTION, KEY_IMAGEPATH, KEY_ART, KEY_PRICE},
                     KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null, null, null)) {
 
@@ -118,6 +112,10 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
                         cursor.getString(4),
                         cursor.getDouble(5));
             }
+        }
+        else{
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
         }
         return shoe;
     }
@@ -154,9 +152,13 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
     @Override
     public int getShoesCount() {
         Cursor cursor = null;
-        try (SQLiteDatabase db = this.getReadableDatabase()) {
-            String countQuery = "SELECT * FROM " + TABLE_SHOES;
-            cursor = db.rawQuery(countQuery, null);
+        String countQuery = "SELECT * FROM " + TABLE_SHOES;
+        if (readableDatabase.isOpen()) {
+            cursor = readableDatabase.rawQuery(countQuery, null);
+        }
+        else{
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
         }
 
         if (cursor != null) {
@@ -168,22 +170,29 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
 
     @Override
     public void updateShoe(Shoe shoe) {
-
-        try (SQLiteDatabase db = this.getWritableDatabase()) {
+        if (writableDatabase.isOpen()) {
             ContentValues values = new ContentValues();
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
             values.put(KEY_ART, shoe.getArt());
             values.put(KEY_PRICE, shoe.getPrice());
-            db.update(TABLE_SHOES, values, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
+            writableDatabase.update(TABLE_SHOES, values, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
+        }
+        else {
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
         }
     }
 
     @Override
     public void deleteShoe(Shoe shoe) {
-        try (SQLiteDatabase db = this.getWritableDatabase()) {
-            db.delete(TABLE_SHOES, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
+        if(writableDatabase.isOpen()) {
+            writableDatabase.delete(TABLE_SHOES, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
+        }
+        else{
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
         }
     }
 
