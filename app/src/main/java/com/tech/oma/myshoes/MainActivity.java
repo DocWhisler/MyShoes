@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         this.mCoordianteLayout = findViewById(R.id.mainactivity_layout);
         this.shoeDao = ShoeDaoImpl.getShoeDaoInstance(mContext);
         this.shoes = this.shoeDao.getShoes();
-        this.shoeId = this.shoeDao.getMaxId();
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(mContext, "Anz Schuhe " + shoes.size() + "'" , Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "Anz Schuhe " + shoes.size() + "'\nMaxId '" + this.shoeDao.getMaxId() + "'", Toast.LENGTH_LONG).show();
     }
 
     private void createPopUpWindow(final ViewGroup container) {
@@ -154,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         if(!priceStr.isEmpty()){
             price = Double.parseDouble(priceStr);
         }
-        return shoeDao.createShoe(1, titel, decription, mCurrentPhotoPath, art, price);
+        return shoeDao.createShoe(titel, decription, mCurrentPhotoPath, art, price);
     }
 
     private void savePhoto() {

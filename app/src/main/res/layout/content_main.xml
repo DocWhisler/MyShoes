@@ -7,7 +7,7 @@
     android:paddingBottom="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="30dp"
+    android:paddingTop="60dp"
     tools:context=".MainActivity" >
 
     <TextView
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:text=" Computer Languages..." />
+        android:text="@string/schuhliste" />
 
     <ListView
         android:id="@+id/listView"
