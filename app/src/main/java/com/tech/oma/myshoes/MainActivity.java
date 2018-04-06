@@ -40,14 +40,14 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<Shoe> shoes ;
     private Context mContext;
     private CoordinatorLayout mCoordianteLayout;
     private LayoutInflater inflater;
     private String mCurrentPhotoPath;
     private File photoFile;
     private ShoeDao shoeDao;
-    private int shoeId;
+    private ListView shoeListView;
+    private CustomAdapter shoeLvAdapter;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -59,16 +59,15 @@ public class MainActivity extends AppCompatActivity {
         this.mContext = this.getApplicationContext();
         this.mCoordianteLayout = findViewById(R.id.mainactivity_layout);
         this.shoeDao = ShoeDaoImpl.getShoeDaoInstance(mContext);
-        this.shoes = this.shoeDao.getShoes();
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
-        // TODO Custom ListView with shoes
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new CustomAdapter(this, shoes));
+        this.shoeListView = findViewById(R.id.listView);
+        this.shoeLvAdapter = new CustomAdapter(this, this.shoeDao.getShoes());
+        this.shoeListView.setAdapter(shoeLvAdapter);
 
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(mContext, "Anz Schuhe " + shoes.size() + "'\nMaxId '" + this.shoeDao.getMaxId() + "'", Toast.LENGTH_LONG).show();
+        Toast.makeText(mContext, "Anz Schuhe " + this.shoeDao.getShoes().size() + "'\nMaxId '" + this.shoeDao.getMaxId() + "'", Toast.LENGTH_LONG).show();
     }
 
     private void createPopUpWindow(final ViewGroup container) {
@@ -123,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // OK
         TextView ok = container.findViewById(R.id.okBtn);
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 shoeDao.saveShoe(shoe);
                 savePhoto();
                 popupWindow.dismiss();
+                shoeLvAdapter.refreshEvents(shoeDao.getShoes());
             }
         });
     }
@@ -143,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
         TextView tvDescription = container.findViewById(R.id.editDescription);
         String decription = tvDescription.getText().toString();
 
+        String filePath = mCurrentPhotoPath != null ? mCurrentPhotoPath : "";
+
         TextView tvArt = container.findViewById(R.id.editArt);
         String art = tvArt.getText().toString();
 
@@ -151,15 +154,21 @@ public class MainActivity extends AppCompatActivity {
 
         double price = 0.0;
         if(!priceStr.isEmpty()){
+            if(priceStr.indexOf('.') < 0){
+                priceStr += ".0";
+            }
+
             price = Double.parseDouble(priceStr);
         }
-        return shoeDao.createShoe(titel, decription, mCurrentPhotoPath, art, price);
+        return shoeDao.createShoe(titel, decription, filePath, art, price);
     }
 
     private void savePhoto() {
         File photo = this.photoFile;
-        OutputStream fOutputStream = null;
+        if(photo == null)
+            return;
 
+        OutputStream fOutputStream = null;
         try {
             fOutputStream = new FileOutputStream(photo);
 

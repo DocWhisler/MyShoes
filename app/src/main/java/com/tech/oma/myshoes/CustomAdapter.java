@@ -68,4 +68,10 @@ public class CustomAdapter extends BaseAdapter {
         });
         return rowView;
     }
+
+    public void refreshEvents(ArrayList<Shoe> shoes) {
+        this.listItem.clear();
+        this.listItem.addAll(shoes);
+        notifyDataSetChanged();
+    }
 }
