@@ -199,7 +199,7 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
     @Override
     public int getMaxId() {
         Cursor cursor = null;
-        String query = "SELECT * FROM " + TABLE_SHOES;
+        String query = "SELECT max(" + KEY_ID + ") FROM " + TABLE_SHOES;
 
         if(readableDatabase.isOpen()){
             cursor = readableDatabase.rawQuery(query, null);
