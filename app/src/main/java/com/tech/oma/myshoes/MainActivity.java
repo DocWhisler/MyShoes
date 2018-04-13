@@ -10,9 +10,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -24,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +35,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private File photoFile;
     private ShoeDao shoeDao;
-    private ListView shoeListView;
+    private RecyclerView shoeListRv;
     private CustomAdapter shoeLvAdapter;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
@@ -65,9 +64,15 @@ public class MainActivity extends AppCompatActivity {
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
-        this.shoeListView = findViewById(R.id.listView);
-        this.shoeLvAdapter = new CustomAdapter(this, this.shoeDao.getShoes());
-        this.shoeListView.setAdapter(shoeLvAdapter);
+        this.shoeListRv = findViewById(R.id.listView);
+        this.shoeListRv.setHasFixedSize(true);
+        LinearLayoutManager lim = new LinearLayoutManager(this);
+        lim.setOrientation(LinearLayoutManager.VERTICAL);
+        this.shoeListRv.setLayoutManager(lim);
+
+        // Custom Card Adapter
+//        this.shoeLvAdapter = new CustomAdapter(this, this.shoeDao.getShoes());
+//        this.shoeListRv.setAdapter(shoeLvAdapter);
 
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
