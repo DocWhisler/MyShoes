@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.mContext = this.getApplicationContext();
-        this.mCoordianteLayout = findViewById(R.id.mainactivity_layout);
+        this.mCoordianteLayout = findViewById(R.id.coordinate_layout);
         this.shoeDao = ShoeDaoImpl.getShoeDaoInstance(mContext);
 
         // Toolbar
@@ -64,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
-        this.shoeListRv = findViewById(R.id.shoerecycleview);
+        this.shoeListRv = findViewById(R.id.cardList);
         this.shoeListRv.setHasFixedSize(true);
 
-//        LinearLayoutManager lim = new LinearLayoutManager(this);
-//        lim.setOrientation(LinearLayoutManager.VERTICAL);
-//        this.shoeListRv.setLayoutManager(lim);
+        LinearLayoutManager lim = new LinearLayoutManager(this);
+        lim.setOrientation(LinearLayoutManager.VERTICAL);
+        this.shoeListRv.setLayoutManager(lim);
 
         // Custom Card Adapter
         this.shoeLvAdapter = new ShoeRecyclerAdapter(this.shoeDao.getShoes());
