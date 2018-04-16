@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/shoeimage"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:background="#00000000"
@@ -21,7 +21,7 @@
             card_view:srcCompat="@android:drawable/ic_menu_camera" />
 
         <TextView
-            android:id="@+id/txtTitel"
+            android:id="@+id/cardtitel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
