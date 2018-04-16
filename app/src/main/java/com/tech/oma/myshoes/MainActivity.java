@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private File photoFile;
     private ShoeDao shoeDao;
     private RecyclerView shoeListRv;
-    private CustomAdapter shoeLvAdapter;
+    private ShoeRecyclerAdapter shoeLvAdapter;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -64,15 +64,16 @@ public class MainActivity extends AppCompatActivity {
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
-        this.shoeListRv = findViewById(R.id.listView);
+        this.shoeListRv = findViewById(R.id.shoerecycleview);
         this.shoeListRv.setHasFixedSize(true);
-        LinearLayoutManager lim = new LinearLayoutManager(this);
-        lim.setOrientation(LinearLayoutManager.VERTICAL);
-        this.shoeListRv.setLayoutManager(lim);
+
+//        LinearLayoutManager lim = new LinearLayoutManager(this);
+//        lim.setOrientation(LinearLayoutManager.VERTICAL);
+//        this.shoeListRv.setLayoutManager(lim);
 
         // Custom Card Adapter
-//        this.shoeLvAdapter = new CustomAdapter(this, this.shoeDao.getShoes());
-//        this.shoeListRv.setAdapter(shoeLvAdapter);
+        this.shoeLvAdapter = new ShoeRecyclerAdapter(this.shoeDao.getShoes());
+        this.shoeListRv.setAdapter(shoeLvAdapter);
 
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);

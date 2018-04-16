@@ -19,7 +19,7 @@
         android:text="@string/schuhliste" />
 
     <android.support.v7.widget.RecyclerViewandroid.support.v7.widget.RecyclerView
-        android:id="@+id/listView"
+        android:id="@+id/shoerecycleview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
 

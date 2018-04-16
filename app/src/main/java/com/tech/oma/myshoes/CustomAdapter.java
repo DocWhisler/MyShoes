@@ -50,22 +50,22 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         Holder holder=new Holder();
-        View rowView;
+        View rowView = null;
 
-        rowView = inflater.inflate(R.layout.shoe_list, null);
-        holder.textView = rowView.findViewById(R.id.textView1);
-        holder.imageView = rowView.findViewById(R.id.imageView1);
-
-        holder.textView.setText(listItem.get(position).getTitel());
-//        holder.imageView.setImageResource(listItem.);
-
-        rowView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(mContext, "You Clicked " + listItem.get(position), Toast.LENGTH_LONG).show();
-            }
-        });
+//        rowView = inflater.inflate(R.layout.shoe_list, null);
+//        holder.textView = rowView.findViewById(R.id.textView1);
+//        holder.imageView = rowView.findViewById(R.id.imageView1);
+//
+//        holder.textView.setText(listItem.get(position).getTitel());
+////        holder.imageView.setImageResource(listItem.);
+//
+//        rowView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // TODO Auto-generated method stub
+//                Toast.makeText(mContext, "You Clicked " + listItem.get(position), Toast.LENGTH_LONG).show();
+//            }
+//        });
         return rowView;
     }
 
