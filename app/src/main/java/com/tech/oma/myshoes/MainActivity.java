@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
-        fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Close Button
         ImageButton ibClose = container.findViewById(R.id.closeBtn);
-        ibClose.setOnClickListener(new View.OnClickListener() {
+        ibClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 popupWindow.dismiss();
@@ -120,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         // Capture Photo
         final ImageView photoView = container.findViewById(R.id.photoView);
         TextView capture = container.findViewById(R.id.capturePhoto);
-        capture.setOnClickListener(new View.OnClickListener() {
+        capture.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 photoFile = dispatchTakePictureIntent();
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         // OK
         TextView ok = container.findViewById(R.id.okBtn);
-        ok.setOnClickListener(new View.OnClickListener() {
+        ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -279,13 +280,19 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                Toast.makeText(mContext,  "Settings", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_delete:
+                // User chose the "Delete" item, show the app settings UI...
+                Toast.makeText(mContext,  "Delete", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
-
-        return super.onOptionsItemSelected(item);
     }
 }
