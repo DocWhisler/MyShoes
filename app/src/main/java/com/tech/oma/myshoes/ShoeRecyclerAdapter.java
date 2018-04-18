@@ -1,5 +1,6 @@
 package com.tech.oma.myshoes;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +25,18 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(ShoeViewHolder shoeViewholder, int position) {
-        Shoe shoe = shoeList.get(position);
+    public void onBindViewHolder(final ShoeViewHolder shoeViewholder, int position) {
+        final Shoe shoe = shoeList.get(position);
 //        shoeViewholder.shoeImage.setImageBitmap(android.graphics.drawable.); XXX noch nicht gestzt
         shoeViewholder.titel.setText(shoe.getTitel());
+        shoeViewholder.titel.setBackgroundColor(shoe.isSelected() ? Color.CYAN : Color.WHITE);
+        shoeViewholder.titel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shoe.setSelected(!shoe.isSelected());
+                shoeViewholder.titel.setBackgroundColor(shoe.isSelected() ? Color.CYAN : Color.WHITE);
+            }
+        });
     }
 
     @Override

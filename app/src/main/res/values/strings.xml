@@ -11,4 +11,5 @@
     <string name="capture">Capture</string>
     <string name="price">Preis</string>
     <string name="schuhliste">Schuhliste</string>
+    <string name="card_titel">Titel</string>
 </resources>

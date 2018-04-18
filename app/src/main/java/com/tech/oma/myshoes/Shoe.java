@@ -22,6 +22,8 @@ public class Shoe {
 
     private double price;
 
+    private boolean isSelected;
+
     public Shoe(int id, String titel, String description, String imagePath, String art, double price) {
         this.id = id;
         this.titel = titel;
@@ -29,6 +31,7 @@ public class Shoe {
         this.imagePath = imagePath;
         this.art = art;
         this.price = price;
+        this.isSelected = false;
     }
 
     public int getId() {
@@ -77,5 +80,13 @@ public class Shoe {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 }
