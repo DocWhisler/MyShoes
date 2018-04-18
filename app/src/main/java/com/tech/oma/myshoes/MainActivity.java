@@ -290,6 +290,9 @@ public class MainActivity extends AppCompatActivity {
                 // User chose the "Delete" item, show the app settings UI...
                 Toast.makeText(mContext,  "Delete", Toast.LENGTH_LONG).show();
                 return true;
+            case R.id.action_update:
+                shoeLvAdapter.refreshEvents(shoeDao.getShoes());
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
