@@ -82,29 +82,29 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         this.shoeRecycleView.setAdapter(shoeRecyclerAdapter);
 
         this.shoeRecycleView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, shoeRecycleView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if (isMultiSelect){
-                            //if multiple selection is enabled then select item on single click else perform normal click on item.
-                            multiSelect(position);
-                        }
-                    }
-
-                    @Override
-                    public void onItemLongClick(View view, int position) {
-                        if (!isMultiSelect){
-                            selectedIds = new ArrayList<>();
-                            isMultiSelect = true;
-
-                            if (actionMode == null){
-                                actionMode = startActionMode(MainActivity.this); //show ActionMode.
-                            }
-                        }
-
+            new RecyclerItemClickListener(this, shoeRecycleView, new RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    if (isMultiSelect){
+                        //if multiple selection is enabled then select item on single click else perform normal click on item.
                         multiSelect(position);
                     }
-                }));
+                }
+
+                @Override
+                public void onItemLongClick(View view, int position) {
+                    if (!isMultiSelect){
+                        selectedIds = new ArrayList<>();
+                        isMultiSelect = true;
+
+                        if (actionMode == null){
+                            actionMode = startActionMode(MainActivity.this); //show ActionMode.
+                        }
+                    }
+
+                    multiSelect(position);
+                }
+            }));
 
 
         // ADD Button mit öffnen des PopUpWindows
@@ -385,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                     actionMode.finish(); //hide action mode.
                 }
                 this.shoeRecyclerAdapter.setSelectedIds(selectedIds);
+                this.shoeRecyclerAdapter.refreshEvents(this.shoeDao.getShoes());
             }
         }
     }
