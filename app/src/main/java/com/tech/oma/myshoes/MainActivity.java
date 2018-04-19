@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         lim.setOrientation(LinearLayoutManager.VERTICAL);
 
         // Custom Card Adapter
-        this.shoeRecyclerAdapter = new ShoeRecyclerAdapter(this.shoeDao.getShoes());
+        this.shoeRecyclerAdapter = new ShoeRecyclerAdapter(mContext, this.shoeDao.getShoes());
         this.shoeRecycleView.setAdapter(shoeRecyclerAdapter);
 
         this.shoeRecycleView.addOnItemTouchListener(

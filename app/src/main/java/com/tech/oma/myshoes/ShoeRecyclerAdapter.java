@@ -1,5 +1,6 @@
 package com.tech.oma.myshoes;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
@@ -15,10 +16,12 @@ import java.util.ArrayList;
 
 public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapter.ShoeViewHolder> {
 
+    private Context context;
     private ArrayList<Shoe> shoeList;
     private ArrayList<Integer> selectedIds = new ArrayList<>();
 
-    public ShoeRecyclerAdapter(ArrayList<Shoe> shoes){
+    public ShoeRecyclerAdapter(Context context, ArrayList<Shoe> shoes){
+        this.context = context;
         this.shoeList = shoes;
     }
 
@@ -33,13 +36,26 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         final Shoe shoe = shoeList.get(position);
 //        shoeViewholder.shoeImage.setImageBitmap(android.graphics.drawable.); XXX noch nicht gestzt
         shoeViewholder.titel.setText(shoe.getTitel());
-        shoeViewholder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                shoe.setSelected(!shoe.isSelected());
-                shoeViewholder.card.setBackgroundColor(shoe.isSelected() ? Color.CYAN : Color.WHITE);
-            }
-        });
+
+        int id = shoe.getId();
+        if (selectedIds.contains(id)){
+            //if item is selected then,set foreground color of FrameLayout.
+            shoeViewholder.card.setForeground(new ColorDrawable(ContextCompat.getColor(context,R.color.colorControlActivated)));
+        }
+        else {
+            //else remove selected item color.
+            shoeViewholder.card.setForeground(new ColorDrawable(ContextCompat.getColor(context,android.R.color.transparent)));
+        }
+
+
+
+//        shoeViewholder.card.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                shoe.setSelected(!shoe.isSelected());
+//                shoeViewholder.card.setBackgroundColor(shoe.isSelected() ? Color.CYAN : Color.WHITE);
+//            }
+//        });
     }
 
     @Override
