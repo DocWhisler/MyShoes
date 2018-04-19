@@ -13,4 +13,5 @@
     <string name="price">Preis</string>
     <string name="schuhliste">Schuhliste</string>
     <string name="card_titel">Titel</string>
+    <string name="menu_select">Selected</string>
 </resources>

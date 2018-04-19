@@ -16,9 +16,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,9 +38,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActionMode.Callback{
 
     private Context mContext;
     private CoordinatorLayout mCoordianteLayout;
@@ -46,8 +49,11 @@ public class MainActivity extends AppCompatActivity {
     private String mCurrentPhotoPath;
     private File photoFile;
     private ShoeDao shoeDao;
-    private RecyclerView shoeListRv;
-    private ShoeRecyclerAdapter shoeLvAdapter;
+    private RecyclerView shoeRecycleView;
+    private ShoeRecyclerAdapter shoeRecyclerAdapter;
+    private ActionMode actionMode;
+    private boolean isMultiSelect = false;
+    private ArrayList<Integer> selectedIds = new ArrayList<>();
 
     private static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -65,16 +71,41 @@ public class MainActivity extends AppCompatActivity {
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
-        this.shoeListRv = findViewById(R.id.cardList);
-        this.shoeListRv.setHasFixedSize(true);
-
+        this.shoeRecycleView = findViewById(R.id.cardList);
         LinearLayoutManager lim = new LinearLayoutManager(this);
+        this.shoeRecycleView.setHasFixedSize(true);
+        this.shoeRecycleView.setLayoutManager(lim);
         lim.setOrientation(LinearLayoutManager.VERTICAL);
-        this.shoeListRv.setLayoutManager(lim);
 
         // Custom Card Adapter
-        this.shoeLvAdapter = new ShoeRecyclerAdapter(this.shoeDao.getShoes());
-        this.shoeListRv.setAdapter(shoeLvAdapter);
+        this.shoeRecyclerAdapter = new ShoeRecyclerAdapter(this.shoeDao.getShoes());
+        this.shoeRecycleView.setAdapter(shoeRecyclerAdapter);
+
+        this.shoeRecycleView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, shoeRecycleView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        if (isMultiSelect){
+                            //if multiple selection is enabled then select item on single click else perform normal click on item.
+                            multiSelect(position);
+                        }
+                    }
+
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+                        if (!isMultiSelect){
+                            selectedIds = new ArrayList<>();
+                            isMultiSelect = true;
+
+                            if (actionMode == null){
+                                actionMode = startActionMode(MainActivity.this); //show ActionMode.
+                            }
+                        }
+
+                        multiSelect(position);
+                    }
+                }));
+
 
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
@@ -96,6 +127,77 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(mContext, "Anz Schuhe " + this.shoeDao.getShoes().size() + "'\nMaxId '" + this.shoeDao.getMaxId() + "'", Toast.LENGTH_LONG).show();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()){
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                Toast.makeText(mContext,  "Settings", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_update:
+                shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+
+    // ACTION MODE
+    @Override
+    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        MenuInflater inflater = mode.getMenuInflater();
+        inflater.inflate(R.menu.menu_select, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        return false;
+    }
+
+    @Override
+    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+        ArrayList<Shoe> shoes = this.shoeDao.getShoes();
+        switch (item.getItemId()){
+            case R.id.action_delete:
+                //just to show selected items.
+                StringBuilder stringBuilder = new StringBuilder();
+                for (Shoe shoe : shoes) {
+                    if (selectedIds.contains(shoe.getId())){
+                        stringBuilder.append("\n").append(shoe.getTitel());
+                    }
+                }
+                Toast.makeText(this, "Selected items are :" + stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroyActionMode(ActionMode mode) {
+        actionMode = null;
+        isMultiSelect = false;
+        selectedIds = new ArrayList<>();
+        this.shoeRecyclerAdapter.setSelectedIds(new ArrayList<Integer>());
+    }
+
+
+
+    // PRIVATE METHODEN
     private void createPopUpWindow(final ViewGroup container) {
         // PopUpWindow initialising
         DisplayMetrics dm = new DisplayMetrics();
@@ -139,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                 shoeDao.saveShoe(shoe);
                 savePhoto();
                 popupWindow.dismiss();
-                shoeLvAdapter.refreshEvents(shoeDao.getShoes());
+                shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
             }
         });
     }
@@ -267,35 +369,23 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
+    private void multiSelect(int position) {
+        Shoe shoe = this.shoeRecyclerAdapter.getItem(position);
+        if (shoe != null){
+            if (actionMode != null) {
+                if (selectedIds.contains(shoe.getId()))
+                    selectedIds.remove(Integer.valueOf(shoe.getId()));
+                else
+                    selectedIds.add(shoe.getId());
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-
-        switch (item.getItemId()){
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                Toast.makeText(mContext,  "Settings", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.action_delete:
-                // User chose the "Delete" item, show the app settings UI...
-                Toast.makeText(mContext,  "Delete", Toast.LENGTH_LONG).show();
-                return true;
-            case R.id.action_update:
-                shoeLvAdapter.refreshEvents(shoeDao.getShoes());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
+                if (selectedIds.size() > 0)
+                    actionMode.setTitle(String.valueOf(selectedIds.size())); //show selected item count on action mode.
+                else{
+                    actionMode.setTitle(""); //remove item count from action mode.
+                    actionMode.finish(); //hide action mode.
+                }
+                this.shoeRecyclerAdapter.setSelectedIds(selectedIds);
+            }
         }
     }
 }
