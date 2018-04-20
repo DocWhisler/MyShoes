@@ -1,7 +1,6 @@
 package com.tech.oma.myshoes;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -40,7 +39,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         int id = shoe.getId();
         if (selectedIds.contains(id)){
             //if item is selected then,set foreground color of FrameLayout.
-            shoeViewholder.card.setForeground(new ColorDrawable(ContextCompat.getColor(context,R.color.colorControlActivated)));
+            shoeViewholder.card.setForeground(new ColorDrawable(ContextCompat.getColor(context,R.color.card_colorControlActivated)));
         }
         else {
             //else remove selected item color.

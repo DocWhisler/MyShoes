@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
-    android:background="#ab2fc4"
+    android:background="@color/popoutwindow_background"
     android:padding="2dp"
     android:visibility="visible">
 
@@ -23,11 +23,11 @@
 
     <ImageView
         android:id="@+id/photoView"
-        android:layout_width="150dp"
+        android:layout_width="146dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/closeBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="79dp"
         android:adjustViewBounds="true"
         android:background="@android:color/transparent"
         android:contentDescription="@string/popout_photo_view"
@@ -39,8 +39,9 @@
         android:id="@+id/editTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_below="@+id/closeBtn"
+        android:layout_toEndOf="@+id/photoView"
+        android:layout_margin="@dimen/popwin_foto_margin"
         android:ems="10"
         android:inputType="textPersonName"
         android:selectAllOnFocus="true"
@@ -54,7 +55,7 @@
         android:layout_alignStart="@+id/editTitel"
         android:layout_below="@+id/editTitel"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:selectAllOnFocus="true"
         android:text="@string/description" />
 
@@ -70,28 +71,6 @@
         android:singleLine="true"
         android:text="@string/art" />
 
-    <TextView
-        android:id="@+id/okBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/editArt"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="27dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/ok" />
-
-    <TextView
-        android:id="@+id/capturePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/okBtn"
-        android:layout_alignBottom="@+id/okBtn"
-        android:layout_alignEnd="@+id/photoView"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/capture" />
-
     <EditText
         android:id="@+id/editPrice"
         android:layout_width="wrap_content"
@@ -102,4 +81,26 @@
         android:inputType="numberDecimal"
         android:selectAllOnFocus="true"
         android:text="@string/price" />
+
+    <TextView
+        android:id="@+id/okBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/closeBtn"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/ok" />
+
+    <TextView
+        android:id="@+id/capturePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="73dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/capture" />
+
 </RelativeLayout>
