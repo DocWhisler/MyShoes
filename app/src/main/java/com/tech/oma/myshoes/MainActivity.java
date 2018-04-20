@@ -171,20 +171,27 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
     @Override
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-        ArrayList<Shoe> shoes = this.shoeDao.getShoes();
         switch (item.getItemId()){
             case R.id.action_delete:
-                //just to show selected items.
-                StringBuilder stringBuilder = new StringBuilder();
-                for (Shoe shoe : shoes) {
-                    if (selectedIds.contains(shoe.getId())){
-                        stringBuilder.append("\n").append(shoe.getTitel());
+                for (int id : this.selectedIds) {
+                    Shoe shoe = this.shoeDao.getShoe(id);
+                    if(shoe != null && selectedIds.contains(shoe.getId()))
+                    {
+                        this.shoeDao.deleteShoe(shoe);
+                        this.selectedIds.remove(Integer.valueOf(shoe.getId()));
                     }
                 }
-                Toast.makeText(this, "Selected items are :" + stringBuilder.toString(), Toast.LENGTH_SHORT).show();
+                this.shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
+                this.shoeRecyclerAdapter.setSelectedIds(this.selectedIds);
+
+                if(selectedIds.size() <= 0){
+                    actionMode.setTitle(""); //remove item count from action mode.
+                    actionMode.finish(); //hide action mode.
+                }
                 return true;
+            default:
+                return false;
         }
-        return false;
     }
 
     @Override

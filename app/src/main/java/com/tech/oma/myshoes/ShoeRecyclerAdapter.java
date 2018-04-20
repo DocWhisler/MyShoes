@@ -46,16 +46,6 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
             //else remove selected item color.
             shoeViewholder.card.setForeground(new ColorDrawable(ContextCompat.getColor(context,android.R.color.transparent)));
         }
-
-
-
-//        shoeViewholder.card.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                shoe.setSelected(!shoe.isSelected());
-//                shoeViewholder.card.setBackgroundColor(shoe.isSelected() ? Color.CYAN : Color.WHITE);
-//            }
-//        });
     }
 
     @Override
