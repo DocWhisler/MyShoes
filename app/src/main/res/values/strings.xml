@@ -3,15 +3,17 @@
     <string name="action_settings">Settings</string>
     <string name="action_delete">Delete</string>
     <string name="action_update">Update</string>
-    <string name="titel">Titel</string>
-    <string name="description">Beschreibung</string>
-    <string name="art">Art</string>
-    <string name="ok">OK</string>
-    <string name="close_button">closeButton</string>
+    <string name="popout_titel">Titel</string>
+    <string name="popout_description">Beschreibung</string>
+    <string name="popout_tag">Art</string>
+    <string name="popout_ok">OK</string>
+    <string name="popout_close_button">closeButton</string>
     <string name="popout_photo_view">takePhoto</string>
-    <string name="capture">Capture</string>
-    <string name="price">Preis</string>
-    <string name="schuhliste">Schuhliste</string>
+    <string name="popout_capture">Capture</string>
+    <string name="popout_price">Preis</string>
     <string name="card_titel">Titel</string>
+    <string name="card_description">Beschreibung</string>
+    <string name="card_tag">Tag</string>
+    <string name="card_price">Preis</string>
     <string name="menu_select">Selected</string>
 </resources>

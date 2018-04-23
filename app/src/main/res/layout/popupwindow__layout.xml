@@ -16,7 +16,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:backgroundTint="@android:color/transparent"
-        android:contentDescription="@string/close_button"
+        android:contentDescription="@string/popout_close_button"
         android:tint="@android:color/black"
         android:visibility="visible"
         android:src="@android:drawable/ic_menu_close_clear_cancel" />
@@ -46,7 +46,7 @@
         android:inputType="textPersonName"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:text="@string/titel" />
+        android:text="@string/popout_titel" />
 
     <EditText
         android:id="@+id/editDescription"
@@ -57,7 +57,7 @@
         android:ems="10"
         android:inputType="text"
         android:selectAllOnFocus="true"
-        android:text="@string/description" />
+        android:text="@string/popout_description" />
 
     <EditText
         android:id="@+id/editArt"
@@ -69,7 +69,7 @@
         android:inputType="textPersonName"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:text="@string/art" />
+        android:text="@string/popout_tag" />
 
     <EditText
         android:id="@+id/editPrice"
@@ -80,7 +80,7 @@
         android:ems="10"
         android:inputType="numberDecimal"
         android:selectAllOnFocus="true"
-        android:text="@string/price" />
+        android:text="@string/popout_price" />
 
     <TextView
         android:id="@+id/okBtn"
@@ -90,7 +90,7 @@
         android:layout_alignStart="@+id/closeBtn"
         android:clickable="true"
         android:focusable="true"
-        android:text="@string/ok" />
+        android:text="@string/popout_ok" />
 
     <TextView
         android:id="@+id/capturePhoto"
@@ -101,6 +101,6 @@
         android:layout_marginEnd="73dp"
         android:clickable="true"
         android:focusable="true"
-        android:text="@string/capture" />
+        android:text="@string/popout_capture" />
 
 </RelativeLayout>
