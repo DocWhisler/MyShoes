@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setWidth((int) (width*.8));
-        popupWindow.setHeight((int) (height*.4));
+        popupWindow.setHeight((int) (height*.3));
 
         popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.2));
 
