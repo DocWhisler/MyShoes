@@ -30,6 +30,7 @@
 
             <TextView
                 android:id="@+id/cardtitel"
+                style="@style/AppTheme.TextHeaderStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -39,6 +40,7 @@
 
             <TextView
                 android:id="@+id/cardtag"
+                style="@style/AppTheme.TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@id/cardtitel"
@@ -49,6 +51,7 @@
 
             <TextView
                 android:id="@+id/cardprice"
+                style="@style/AppTheme.TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cardtitel"
@@ -59,6 +62,7 @@
 
             <TextView
                 android:id="@+id/carddescription"
+                style="@style/AppTheme.TextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignStart="@id/cardtag"

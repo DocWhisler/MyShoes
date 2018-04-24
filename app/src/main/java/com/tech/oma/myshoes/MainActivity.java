@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         });
 
         // Capture Photo
-        final ImageView photoView = container.findViewById(R.id.photoView);
+        final ImageView photoView = container.findViewById(R.id.editphotoView);
         TextView capture = container.findViewById(R.id.capturePhoto);
         capture.setOnClickListener(new OnClickListener() {
             @Override
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
         String filePath = mCurrentPhotoPath != null ? mCurrentPhotoPath : "";
 
-        TextView tvArt = container.findViewById(R.id.editArt);
+        TextView tvArt = container.findViewById(R.id.editTag);
         String art = tvArt.getText().toString();
 
         EditText tvPrice = container.findViewById(R.id.editPrice);

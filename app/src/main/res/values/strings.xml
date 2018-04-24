@@ -5,7 +5,7 @@
     <string name="action_update">Update</string>
     <string name="popout_titel">Titel</string>
     <string name="popout_description">Beschreibung</string>
-    <string name="popout_tag">Art</string>
+    <string name="popout_tag">Tag</string>
     <string name="popout_ok">OK</string>
     <string name="popout_close_button">closeButton</string>
     <string name="popout_photo_view">takePhoto</string>
