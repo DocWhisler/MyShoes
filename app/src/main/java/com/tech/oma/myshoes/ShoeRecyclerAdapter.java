@@ -33,8 +33,12 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
     @Override
     public void onBindViewHolder(final ShoeViewHolder shoeViewholder, int position) {
         final Shoe shoe = shoeList.get(position);
+        String price = ""+shoe.getPrice();
 //        shoeViewholder.shoeImage.setImageBitmap(android.graphics.drawable.); XXX noch nicht gestzt
         shoeViewholder.titel.setText(shoe.getTitel());
+        shoeViewholder.tag.setText(shoe.getArt());
+        shoeViewholder.price.setText(price);
+        shoeViewholder.description.setText(shoe.getDescription());
 
         int id = shoe.getId();
         if (selectedIds.contains(id)){
@@ -72,13 +76,19 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         protected CardView card;
         protected ImageView shoeImage;
         protected TextView titel;
+        protected TextView tag;
+        protected TextView price;
+        protected TextView description;
 
         public ShoeViewHolder(View itemView) {
             super(itemView);
 
+            card = itemView.findViewById(R.id.card_view);
             shoeImage = itemView.findViewById(R.id.shoeimage);
             titel = itemView.findViewById(R.id.cardtitel);
-            card = itemView.findViewById(R.id.card_view);
+            tag = itemView.findViewById(R.id.cardtag);
+            price = itemView.findViewById(R.id.cardprice);
+            description = itemView.findViewById(R.id.carddescription);
         }
 
         @Override
