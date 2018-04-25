@@ -40,16 +40,16 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ActionMode.Callback{
 
     private Context mContext;
     private CoordinatorLayout mCoordianteLayout;
     private LayoutInflater inflater;
+    private ViewGroup container;
     private String mCurrentPhotoPath;
-    private File photoFile;
     private ShoeDao shoeDao;
-    private RecyclerView shoeRecycleView;
     private ShoeRecyclerAdapter shoeRecyclerAdapter;
     private ActionMode actionMode;
     private boolean isMultiSelect = false;
@@ -71,17 +71,17 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         this.setSupportActionBar(toolbar);
 
         // Create ShoeList
-        this.shoeRecycleView = findViewById(R.id.cardList);
+        RecyclerView shoeRecycleView = findViewById(R.id.cardList);
         LinearLayoutManager lim = new LinearLayoutManager(this);
-        this.shoeRecycleView.setHasFixedSize(true);
-        this.shoeRecycleView.setLayoutManager(lim);
+        shoeRecycleView.setHasFixedSize(true);
+        shoeRecycleView.setLayoutManager(lim);
         lim.setOrientation(LinearLayoutManager.VERTICAL);
 
         // Custom Card Adapter
         this.shoeRecyclerAdapter = new ShoeRecyclerAdapter(mContext, this.shoeDao.getShoes());
-        this.shoeRecycleView.setAdapter(shoeRecyclerAdapter);
+        shoeRecycleView.setAdapter(shoeRecyclerAdapter);
 
-        this.shoeRecycleView.addOnItemTouchListener(
+        shoeRecycleView.addOnItemTouchListener(
             new RecyclerItemClickListener(this, shoeRecycleView, new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
@@ -110,13 +110,13 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
         fab.setOnClickListener(new OnClickListener() {
-                @Override
+
+            @Override
                 public void onClick(View view) {
 
                 // Android PopUp Window
                 inflater = (LayoutInflater)mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-                ViewGroup container= null;
                 if(inflater != null) {
                     container = (ViewGroup) inflater.inflate(R.layout.popupwindow__layout, null);
                     createPopUpWindow(container);
@@ -202,7 +202,16 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         this.shoeRecyclerAdapter.setSelectedIds(new ArrayList<Integer>());
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
 
+        ImageView imageView = null;
+        if (container != null){
+            imageView = container.findViewById(R.id.editphotoView);
+            this.setPic(imageView);
+        }
+    }
 
     // PRIVATE METHODEN
     private void createPopUpWindow(final ViewGroup container) {
@@ -223,6 +232,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         ibClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                // XXX foto löschen
                 popupWindow.dismiss();
             }
         });
@@ -233,8 +243,8 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         capture.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                photoFile = dispatchTakePictureIntent();
-                setPic(photoView);
+                File photoFile = dispatchTakePictureIntent();
+                savePhoto(photoFile);
             }
         });
 
@@ -246,7 +256,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
                 Shoe shoe = createShoeFromView(container);
                 shoeDao.saveShoe(shoe);
-                savePhoto();
                 popupWindow.dismiss();
                 shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
             }
@@ -262,8 +271,8 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
         String filePath = mCurrentPhotoPath != null ? mCurrentPhotoPath : "";
 
-        TextView tvArt = container.findViewById(R.id.editTag);
-        String art = tvArt.getText().toString();
+        TextView tvTag = container.findViewById(R.id.editTag);
+        String tag = tvTag.getText().toString();
 
         EditText tvPrice = container.findViewById(R.id.editPrice);
         String priceStr = tvPrice.getText().toString();
@@ -274,13 +283,17 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 priceStr += ".0";
             }
 
-            price = Double.parseDouble(priceStr);
+            try{
+                price = Double.parseDouble(priceStr);
+            }
+            catch (NumberFormatException e){
+                price = 0.0;
+            }
         }
-        return shoeDao.createShoe(titel, decription, filePath, art, price);
+        return shoeDao.createShoe(titel, decription, filePath, tag, price);
     }
 
-    private void savePhoto() {
-        File photo = this.photoFile;
+    private void savePhoto(File photo) {
         if(photo == null)
             return;
 
@@ -306,26 +319,26 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
     }
 
     private void setPic(ImageView mImageView) {
-        // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
-
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
+        Bitmap bitMap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int currentBitmapWidth = bmOptions.outWidth;
+        int currentBitmapHeight = bmOptions.outHeight;
+
+        // Get the dimensions of the View
+        int ivWidth = mImageView.getWidth();
+        int ivHeight = mImageView.getHeight();
+        int newWidth = ivWidth;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
+        Bitmap newBitMap = Bitmap.createScaledBitmap(bitMap, newWidth, newHeight, true);
 
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        mImageView.setImageBitmap(bitmap);
+        mImageView.setImageBitmap(newBitMap);
     }
 
     private void galleryAddPic(File file) {
@@ -362,8 +375,9 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "Shoe_" + timeStamp;
+        String date = new SimpleDateFormat("yyyyMMdd", Locale.GERMANY).format(new Date());
+        int id = shoeDao.getMaxId()+1;
+        String imageFileName = "Shoe_" + id + date;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */

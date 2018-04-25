@@ -12,7 +12,7 @@ public interface ShoeDao {
 
     Shoe getShoe(int id);
 
-    Shoe createShoe(String titel, String description, String photoPath, String art, double price);
+    Shoe createShoe(String titel, String description, String photoPath, String tag, double price);
 
     void saveShoe(Shoe shoe);
 

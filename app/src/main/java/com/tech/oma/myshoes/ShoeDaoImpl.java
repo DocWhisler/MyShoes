@@ -36,9 +36,9 @@ public class ShoeDaoImpl implements ShoeDao {
     }
 
     @Override
-    public Shoe createShoe(String titel, String description, String photoPath, String art, double price) {
+    public Shoe createShoe(String titel, String description, String photoPath, String tag, double price) {
        int id = this.getMaxId()+1;
-       return new Shoe(id, titel, description, photoPath, art, price);
+       return new Shoe(id, titel, description, photoPath, tag, price);
     }
 
     @Override
