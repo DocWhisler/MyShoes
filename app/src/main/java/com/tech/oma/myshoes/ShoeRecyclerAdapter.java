@@ -1,6 +1,8 @@
 package com.tech.oma.myshoes;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -34,11 +36,15 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
     public void onBindViewHolder(final ShoeViewHolder shoeViewholder, int position) {
         final Shoe shoe = shoeList.get(position);
         String price = ""+shoe.getPrice();
-//        shoeViewholder.shoeImage.setImageBitmap(android.graphics.drawable.); XXX noch nicht gestzt
+        Bitmap bitmap = BitmapFactory.decodeFile(shoe.getImagePath());
+
+        shoeViewholder.price.setText(price);
         shoeViewholder.titel.setText(shoe.getTitel());
         shoeViewholder.tag.setText(shoe.getArt());
-        shoeViewholder.price.setText(price);
         shoeViewholder.description.setText(shoe.getDescription());
+
+        if(bitmap != null)
+            shoeViewholder.shoeImage.setImageBitmap(bitmap);
 
         int id = shoe.getId();
         if (selectedIds.contains(id)){
@@ -70,6 +76,36 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         this.selectedIds = selectedIds;
     }
 
+    private Bitmap getPic(Shoe shoe, ShoeViewHolder holder) {
+        // Get the dimensions of the View
+        ImageView mImageView = holder.shoeImage;
+        String mCurrentPhotoPath = shoe.getImagePath();
+
+        if(mCurrentPhotoPath == null)
+            return null;
+
+        int targetW = mImageView.getWidth();
+        int targetH = mImageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        return bitmap;
+    }
+
     // INNER CLASS ViewHolder
     public static class ShoeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
@@ -84,7 +120,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
             super(itemView);
 
             card = itemView.findViewById(R.id.card_view);
-            shoeImage = itemView.findViewById(R.id.shoeimage);
+            shoeImage = itemView.findViewById(R.id.cardshoeimage);
             titel = itemView.findViewById(R.id.cardtitel);
             tag = itemView.findViewById(R.id.cardtag);
             price = itemView.findViewById(R.id.cardprice);

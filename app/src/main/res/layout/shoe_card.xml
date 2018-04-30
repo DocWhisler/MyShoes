@@ -20,7 +20,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/shoeimage"
+                android:id="@+id/cardshoeimage"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
                 android:layout_margin="@dimen/card_image_margin"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="@dimen/card_titel_margin_top"
-                android:layout_toEndOf="@+id/shoeimage"
+                android:layout_toEndOf="@+id/cardshoeimage"
                 android:text="@string/card_titel" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_alignStart="@id/cardtitel"
                 android:layout_below="@+id/cardtitel"
                 android:layout_marginTop="@dimen/card_text_margin_top"
-                android:layout_toEndOf="@+id/shoeimage"
+                android:layout_toEndOf="@+id/cardshoeimage"
                 android:text="@string/card_tag" />
 
             <TextView
@@ -68,7 +68,7 @@
                 android:layout_alignStart="@id/cardtag"
                 android:layout_below="@+id/cardtag"
                 android:layout_marginTop="@dimen/card_descrp_margin_top"
-                android:layout_toEndOf="@+id/shoeimage"
+                android:layout_toEndOf="@+id/cardshoeimage"
                 android:text="@string/card_description" />
 
         </RelativeLayout>

@@ -1,12 +1,9 @@
 package com.tech.oma.myshoes;
 
-import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -40,7 +36,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
     private boolean isMultiSelect = false;
     private ArrayList<Integer> selectedIds = new ArrayList<>();
     private ImageView mImageView;
+    private File tmpFile;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -182,6 +179,12 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                     Shoe shoe = this.shoeDao.getShoe(id);
                     if(shoe != null && selectedIds.contains(shoe.getId()))
                     {
+                        // remove file
+                        File file = new File(shoe.getImagePath());
+                        if (file.exists()){
+                            file.delete();
+                        }
+
                         this.shoeDao.deleteShoe(shoe);
                         this.selectedIds.remove(Integer.valueOf(shoe.getId()));
                     }
@@ -234,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         ibClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                // XXX foto löschen
+                tmpFile.deleteOnExit();
                 popupWindow.dismiss();
             }
         });
@@ -245,6 +248,9 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         capture.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(tmpFile != null && tmpFile.exists())
+                    tmpFile.deleteOnExit();
+
                 dispatchTakePictureIntent();
             }
         });
@@ -254,9 +260,10 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                savePhoto();
                 Shoe shoe = createShoeFromView(container);
                 shoeDao.saveShoe(shoe);
+
                 popupWindow.dismiss();
                 shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
             }
@@ -294,36 +301,32 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         return shoeDao.createShoe(titel, decription, filePath, tag, price);
     }
 
-    private void savePhoto(File file) {
-        if (file == null)
+    private void savePhoto() {
+        if (mCurrentPhotoPath == null)
             return;
-
 
         String date = new SimpleDateFormat("yyyyMMdd", Locale.GERMANY).format(new Date());
         int id = shoeDao.getMaxId()+1;
+        File filePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         String fileName = "/Shoe_" + id + date + ".jpg";
 
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
 
-
-        OutputStream fOutputStream = null;
+        File file = new File(filePath.getPath()+fileName);
+        FileOutputStream fos;
         try {
-            fOutputStream = new FileOutputStream(file);
-
-            fOutputStream.flush();
-            fOutputStream.close();
-
-            // Add Phosto to gallery
-            galleryAddPic(file);
-            Toast.makeText(this, "Save successful", Toast.LENGTH_SHORT).show();
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Save Failed", Toast.LENGTH_SHORT).show();
-            return;
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Save Failed", Toast.LENGTH_SHORT).show();
-            return;
         }
+
+        mCurrentPhotoPath = filePath+fileName;
+        tmpFile.deleteOnExit();
     }
 
     private void setPic() {
@@ -349,13 +352,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         mImageView.setImageBitmap(bitmap);
     }
 
-    private void galleryAddPic(File file) {
-        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri contentUri = Uri.fromFile(file);
-        mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
-    }
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -363,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
             // Create the File where the photo should go
             File photoFile = null;
             try {
-                photoFile = createImageFile();
+                photoFile = createTmpFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
                 throw new Error("File not found! " + ex.getStackTrace());
@@ -379,20 +375,20 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         }
     }
 
-    private File createImageFile() throws IOException {
+    private File createTmpFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "tmp_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        tmpFile = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+        mCurrentPhotoPath = tmpFile.getAbsolutePath();
+        return tmpFile;
     }
 
     private void multiSelect(int position) {
