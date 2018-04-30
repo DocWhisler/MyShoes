@@ -1,9 +1,12 @@
 package com.tech.oma.myshoes;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
     private ActionMode actionMode;
     private boolean isMultiSelect = false;
     private ArrayList<Integer> selectedIds = new ArrayList<>();
+    private ImageView mImageView;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
 
@@ -203,13 +208,10 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-
-        ImageView imageView = null;
-        if (container != null){
-            imageView = container.findViewById(R.id.editphotoView);
-            this.setPic(imageView);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
+            setPic();
         }
     }
 
@@ -238,13 +240,12 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         });
 
         // Capture Photo
-        final ImageView photoView = container.findViewById(R.id.editphotoView);
-        TextView capture = container.findViewById(R.id.capturePhoto);
+        mImageView = container.findViewById(R.id.editphotoView);
+        final TextView capture = container.findViewById(R.id.capturePhoto);
         capture.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                File photoFile = dispatchTakePictureIntent();
-                savePhoto(photoFile);
+                dispatchTakePictureIntent();
             }
         });
 
@@ -293,19 +294,26 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         return shoeDao.createShoe(titel, decription, filePath, tag, price);
     }
 
-    private void savePhoto(File photo) {
-        if(photo == null)
+    private void savePhoto(File file) {
+        if (file == null)
             return;
+
+
+        String date = new SimpleDateFormat("yyyyMMdd", Locale.GERMANY).format(new Date());
+        int id = shoeDao.getMaxId()+1;
+        String fileName = "/Shoe_" + id + date + ".jpg";
+
+
 
         OutputStream fOutputStream = null;
         try {
-            fOutputStream = new FileOutputStream(photo);
+            fOutputStream = new FileOutputStream(file);
 
             fOutputStream.flush();
             fOutputStream.close();
 
             // Add Phosto to gallery
-            galleryAddPic(photo);
+            galleryAddPic(file);
             Toast.makeText(this, "Save successful", Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -318,27 +326,27 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         }
     }
 
-    private void setPic(ImageView mImageView) {
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = mImageView.getWidth();
+        int targetH = mImageView.getHeight();
+
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
-        Bitmap bitMap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int currentBitmapWidth = bmOptions.outWidth;
-        int currentBitmapHeight = bmOptions.outHeight;
-
-        // Get the dimensions of the View
-        int ivWidth = mImageView.getWidth();
-        int ivHeight = mImageView.getHeight();
-        int newWidth = ivWidth;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int newHeight = (int) Math.floor((double) currentBitmapHeight *( (double) newWidth / (double) currentBitmapWidth));
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
-        Bitmap newBitMap = Bitmap.createScaledBitmap(bitMap, newWidth, newHeight, true);
+        bmOptions.inSampleSize = scaleFactor;
 
-        mImageView.setImageBitmap(newBitMap);
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        mImageView.setImageBitmap(bitmap);
     }
 
     private void galleryAddPic(File file) {
@@ -348,9 +356,8 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         this.sendBroadcast(mediaScanIntent);
     }
 
-    private File dispatchTakePictureIntent() {
+    private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
@@ -358,7 +365,8 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                throw new Error(ex.getMessage());
+                // Error occurred while creating the File
+                throw new Error("File not found! " + ex.getStackTrace());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -368,16 +376,13 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
-            return photoFile;
         }
-        return null;
     }
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String date = new SimpleDateFormat("yyyyMMdd", Locale.GERMANY).format(new Date());
-        int id = shoeDao.getMaxId()+1;
-        String imageFileName = "Shoe_" + id + date;
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -386,7 +391,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        this.mCurrentPhotoPath = image.getAbsolutePath();
+        mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
