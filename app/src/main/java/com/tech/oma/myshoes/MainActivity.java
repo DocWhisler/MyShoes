@@ -40,6 +40,7 @@ import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ActionMode.Callback{
@@ -175,8 +176,13 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_delete:
-                for (int id : this.selectedIds) {
-                    Shoe shoe = this.shoeDao.getShoe(id);
+                Iterator<Integer> iter = selectedIds.iterator();
+
+                //XXX Selected Liste != schuhliste...die positionen können nicht funktionieren
+
+                while(iter.hasNext()) {
+                    int position = iter.next();
+                    Shoe shoe = shoeRecyclerAdapter.getItem(position);
                     if(shoe != null && selectedIds.contains(shoe.getId()))
                     {
                         // remove file
@@ -186,9 +192,11 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                         }
 
                         this.shoeDao.deleteShoe(shoe);
-                        this.selectedIds.remove(Integer.valueOf(shoe.getId()));
+                        this.shoeRecyclerAdapter.removeItem(position);
+                        iter.remove();
                     }
                 }
+
                 this.shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
                 this.shoeRecyclerAdapter.setSelectedIds(this.selectedIds);
 

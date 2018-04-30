@@ -9,9 +9,11 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -68,42 +70,17 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         notifyDataSetChanged();
     }
 
+    public void removeItem(int position) {
+        shoeList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     public Shoe getItem(int position){
         return shoeList.get(position);
     }
 
     public void setSelectedIds(ArrayList<Integer> selectedIds){
         this.selectedIds = selectedIds;
-    }
-
-    private Bitmap getPic(Shoe shoe, ShoeViewHolder holder) {
-        // Get the dimensions of the View
-        ImageView mImageView = holder.shoeImage;
-        String mCurrentPhotoPath = shoe.getImagePath();
-
-        if(mCurrentPhotoPath == null)
-            return null;
-
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        return bitmap;
     }
 
     // INNER CLASS ViewHolder
@@ -115,9 +92,12 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         protected TextView tag;
         protected TextView price;
         protected TextView description;
+        protected int pos = -1;
 
-        public ShoeViewHolder(View itemView) {
+        public ShoeViewHolder(View itemView){
             super(itemView);
+
+            itemView.setOnClickListener(this);
 
             card = itemView.findViewById(R.id.card_view);
             shoeImage = itemView.findViewById(R.id.cardshoeimage);
@@ -134,7 +114,11 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
 
         @Override
         public void onClick(View v) {
+            Toast.makeText(itemView.getContext(), "Position:" + this.getPos() , Toast.LENGTH_LONG).show();
+        }
 
+        public int getPos() {
+            return getAdapterPosition();
         }
     }
 }
