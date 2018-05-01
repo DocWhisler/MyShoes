@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapter.ShoeViewHolder> {
 
@@ -68,11 +69,6 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         this.shoeList.clear();
         this.shoeList.addAll(shoes);
         notifyDataSetChanged();
-    }
-
-    public void removeItem(int position) {
-        shoeList.remove(position);
-        notifyItemRemoved(position);
     }
 
     public Shoe getItem(int position){

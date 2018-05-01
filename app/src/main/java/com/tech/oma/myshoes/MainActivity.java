@@ -177,12 +177,9 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         switch (item.getItemId()){
             case R.id.action_delete:
                 Iterator<Integer> iter = selectedIds.iterator();
-
-                //XXX Selected Liste != schuhliste...die positionen können nicht funktionieren
-
                 while(iter.hasNext()) {
-                    int position = iter.next();
-                    Shoe shoe = shoeRecyclerAdapter.getItem(position);
+                    int shoeId = iter.next();
+                    Shoe shoe = shoeDao.getShoe(shoeId);
                     if(shoe != null && selectedIds.contains(shoe.getId()))
                     {
                         // remove file
@@ -192,7 +189,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                         }
 
                         this.shoeDao.deleteShoe(shoe);
-                        this.shoeRecyclerAdapter.removeItem(position);
                         iter.remove();
                     }
                 }
@@ -246,6 +242,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
             @Override
             public void onClick(View view) {
                 tmpFile.deleteOnExit();
+                mCurrentPhotoPath = null;
                 popupWindow.dismiss();
             }
         });
@@ -258,7 +255,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
             public void onClick(View view) {
                 if(tmpFile != null && tmpFile.exists())
                     tmpFile.deleteOnExit();
-
                 dispatchTakePictureIntent();
             }
         });
@@ -274,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
                 popupWindow.dismiss();
                 shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
+                mCurrentPhotoPath = null;
             }
         });
     }
