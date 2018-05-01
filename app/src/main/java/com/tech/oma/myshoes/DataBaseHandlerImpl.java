@@ -82,7 +82,7 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
             values.put(KEY_ART, shoe.getArt());
-            values.put(KEY_PRICE, shoe.getImagePath());
+            values.put(KEY_PRICE, shoe.getPrice());
 
             writableDatabase.insert(TABLE_SHOES, null, values);
         }

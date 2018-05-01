@@ -110,11 +110,9 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(itemView.getContext(), "Position:" + this.getPos() , Toast.LENGTH_LONG).show();
-        }
-
-        public int getPos() {
-            return getAdapterPosition();
+            int pos = getAdapterPosition();
+            pos++;
+            Toast.makeText(itemView.getContext(), "Position:" + pos , Toast.LENGTH_LONG).show();
         }
     }
 }
