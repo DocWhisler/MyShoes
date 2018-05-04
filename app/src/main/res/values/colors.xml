@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#292929</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#2e2e2e</color>
+    <color name="colorAddBackground">#e10042</color>
+    <color name="popoutwindow_background">#e10042</color>
     <color name="card_background">#ff004b</color>
-    <color name="card_colorControlActivated">#e6ff05</color>
-    <color name="popoutwindow_background">#ff47af</color>
+    <color name="card_colorControlActivated">#a5ff4078</color>
 </resources>
