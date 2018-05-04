@@ -1,115 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/popupwindow_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_centerVertical="true"
     android:background="@color/popoutwindow_background"
-    android:padding="2dp"
-    android:visibility="visible">
+    android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/closeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:backgroundTint="@android:color/transparent"
-        android:contentDescription="@string/popout_close_button"
-        android:tint="@android:color/black"
-        android:visibility="visible"
-        android:src="@android:drawable/ic_menu_close_clear_cancel" />
+    <LinearLayout
+        android:id="@+id/llfoto"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".3"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/editphotoView"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_below="@id/closeBtn"
-        android:layout_marginStart="@dimen/popwin_foto_margin"
-        android:layout_marginBottom="@dimen/popwin_foto_margin"
-        android:gravity="center_vertical"
-        android:scaleType="fitXY"
-        android:background="@android:color/transparent"
-        android:contentDescription="@string/popout_photo_view"
-        android:src="@android:drawable/ic_menu_camera" />
+        <ImageView
+            android:id="@+id/editphotoView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/popwin_foto_margin"
+            android:scaleType="fitXY"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/popout_photo_view"
+            android:src="@android:drawable/ic_menu_camera" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/editTitel"
-        style="@style/AppTheme.TextHeaderStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/closeBtn"
-        android:layout_toEndOf="@+id/editphotoView"
-        android:layout_marginStart="@dimen/popwin_foto_margin"
-        android:selectAllOnFocus="true"
-        android:text="@string/popout_titel"/>
+    <LinearLayout
+        android:id="@+id/llbuttons"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight=".7"
+        android:orientation="horizontal">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editTag"
-        style="@style/AppTheme.TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTitel"
-        android:layout_toEndOf="@+id/editphotoView"
-        android:layout_marginStart="@dimen/popwin_foto_margin"
-        android:layout_marginTop="@dimen/popwin_text_margin"
-        android:inputType="text"
-        android:selectAllOnFocus="true"
-        android:text="@string/popout_tag" />
+            <ImageButton
+                android:id="@+id/closeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:backgroundTint="@android:color/transparent"
+                android:contentDescription="@string/popout_close_button"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="@android:color/black"
+                android:visibility="visible" />
 
 
-    <EditText
-        android:id="@+id/editPrice"
-        style="@style/AppTheme.TextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTitel"
-        android:layout_toEndOf="@+id/editTag"
-        android:layout_marginStart="@dimen/popwin_price_margin_left"
-        android:layout_marginTop="@dimen/popwin_text_margin"
-        android:inputType="numberDecimal"
-        android:selectAllOnFocus="true"
-        android:text="@string/popout_price" />
+            <EditText
+                android:id="@+id/editTitel"
+                style="@style/AppTheme.TextHeaderStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:selectAllOnFocus="true"
+                android:text="@string/popout_titel" />
 
 
-    <EditText
-        android:id="@+id/editDescription"
-        style="@style/AppTheme.TextStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTag"
-        android:layout_toEndOf="@+id/editphotoView"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="@dimen/popwin_foto_margin"
-        android:layout_marginTop="@dimen/popwin_text_margin"
-        android:layout_marginEnd="@dimen/popwin_text_margin_left_parent"
-        android:inputType="text"
-        android:selectAllOnFocus="true"
-        android:text="@string/popout_description" />
+            <EditText
+                android:id="@+id/editTag"
+                style="@style/AppTheme.TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTitel"
+                android:inputType="text"
+                android:selectAllOnFocus="true"
+                android:text="@string/popout_tag" />
 
 
-    <TextView
-        android:id="@+id/capturePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editDescription"
-        android:layout_toStartOf="@+id/okBtn"
-        android:layout_marginEnd="@dimen/popwin_ok_margin_bottom"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/popout_capture" />
+            <EditText
+                android:id="@+id/editPrice"
+                style="@style/AppTheme.TextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editTitel"
+                android:layout_toEndOf="@+id/editTag"
+                android:inputType="numberDecimal"
+                android:selectAllOnFocus="true"
+                android:text="@string/popout_price" />
 
-    <TextView
-        android:id="@+id/okBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/editDescription"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/popwin_ok_margin_bottom"
-        android:layout_marginBottom="@dimen/popwin_ok_margin_bottom"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/popout_ok" />
-</RelativeLayout>
+
+            <EditText
+                android:id="@+id/editDescription"
+                style="@style/AppTheme.TextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/editTag"
+                android:inputType="text"
+                android:selectAllOnFocus="true"
+                android:text="@string/popout_description" />
+
+            <TextView
+                android:id="@+id/capturePhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/editDescription"
+                android:layout_margin="@dimen/popwin_margin_bottom"
+                android:layout_toStartOf="@+id/okBtn"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/popout_capture" />
+
+            <TextView
+                android:id="@+id/okBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/editDescription"
+                android:layout_margin="@dimen/popwin_margin_bottom"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/popout_ok" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

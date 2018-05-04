@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -227,12 +228,11 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         // PopUpWindow initialising
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
         int height = dm.heightPixels;
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setWidth((int) (width*.8));
-        popupWindow.setHeight((int) (height*.3));
+//        popupWindow.setWidth((int) (width*.8));
+//        popupWindow.setHeight((int) (height*.3));
 
         popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.2));
 
@@ -241,7 +241,10 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         ibClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                tmpFile.deleteOnExit();
+                if (tmpFile != null && tmpFile.exists()){
+                    tmpFile.deleteOnExit();
+                }
+
                 mCurrentPhotoPath = null;
                 popupWindow.dismiss();
             }
