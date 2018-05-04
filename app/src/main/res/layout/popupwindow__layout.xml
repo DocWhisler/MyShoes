@@ -3,7 +3,7 @@
     android:id="@+id/popupwindow_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/popoutwindow_background"
+    android:background="@color/basicColorDarkTwo"
     android:orientation="horizontal">
 
     <LinearLayout
