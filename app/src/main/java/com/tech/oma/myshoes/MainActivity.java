@@ -231,10 +231,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         int height = dm.heightPixels;
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-//        popupWindow.setWidth((int) (width*.8));
-//        popupWindow.setHeight((int) (height*.3));
-
-        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.2));
+        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.1));
 
         // Close Button
         ImageButton ibClose = container.findViewById(R.id.closeBtn);
