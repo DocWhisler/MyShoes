@@ -12,14 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:background="@color/basicColorBrightOne">
+        android:background="@color/basicColorTwo">
 
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/basicColorBrightOne"
             app:popupTheme="@style/AppTheme.PopupOverlay"/>
     </android.support.design.widget.AppBarLayout>
 
@@ -32,6 +31,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/card_image_margin"
         app:srcCompat="@android:drawable/ic_menu_add"
-        android:backgroundTint="@color/basicColorDarkOne"/>
+        android:backgroundTint="@color/basicColorFour"/>
 
 </android.support.design.widget.CoordinatorLayout>

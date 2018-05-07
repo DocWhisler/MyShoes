@@ -3,7 +3,8 @@
     android:id="@+id/popupwindow_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/basicColorDarkTwo"
+    android:layout_margin="@dimen/popwin_padding"
+    android:background="@color/basicColorThree"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -15,12 +16,14 @@
 
         <ImageView
             android:id="@+id/editphotoView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/popwin_foto_margin"
-            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:contentDescription="@string/popout_photo_view"
+            android:scaleType="fitXY"
             android:src="@android:drawable/ic_menu_camera" />
     </LinearLayout>
 
@@ -55,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/popwin_text_margin"
                 android:selectAllOnFocus="true"
                 android:text="@string/popout_titel" />
 
@@ -65,6 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/editTitel"
+                android:layout_marginBottom="@dimen/popwin_text_margin"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
                 android:text="@string/popout_tag" />
@@ -77,6 +82,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/editTitel"
                 android:layout_toEndOf="@+id/editTag"
+                android:layout_marginStart="@dimen/popwin_price_margin_left"
+                android:layout_marginBottom="@dimen/popwin_text_margin"
                 android:inputType="numberDecimal"
                 android:selectAllOnFocus="true"
                 android:text="@string/popout_price" />
@@ -89,6 +96,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/editTag"
+                android:layout_marginTop="@dimen/popwin_text_margin"
                 android:inputType="text"
                 android:selectAllOnFocus="true"
                 android:text="@string/popout_description" />
