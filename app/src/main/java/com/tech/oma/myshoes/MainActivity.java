@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -231,7 +233,10 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         int height = dm.heightPixels;
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.1));
+
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        popupWindow.update();
+        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.2));
 
         // Close Button
         ImageButton ibClose = container.findViewById(R.id.closeBtn);
