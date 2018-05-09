@@ -241,6 +241,9 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         popupWindow.setAnimationStyle(R.style.style_popup_anim);
         popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.3));
 
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.update();
+
         final ViewGroup root = (ViewGroup) getWindow().getDecorView().getRootView();
         this.applyDim(root, .5);
 
