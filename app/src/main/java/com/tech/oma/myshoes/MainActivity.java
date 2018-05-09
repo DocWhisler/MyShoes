@@ -6,10 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
@@ -27,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -230,13 +233,16 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         // PopUpWindow initialising
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
         int height = dm.heightPixels;
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.setWidth((int) (width*.95));
+        popupWindow.setAnimationStyle(R.style.style_popup_anim);
+        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.3));
 
-        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        popupWindow.update();
-        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.2));
+        final ViewGroup root = (ViewGroup) getWindow().getDecorView().getRootView();
+        this.applyDim(root, .5);
 
         // Close Button
         ImageButton ibClose = container.findViewById(R.id.closeBtn);
@@ -249,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
                 mCurrentPhotoPath = null;
                 popupWindow.dismiss();
+                clearDim(root);
             }
         });
 
@@ -274,10 +281,25 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 shoeDao.saveShoe(shoe);
 
                 popupWindow.dismiss();
+                clearDim(root);
                 shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
                 mCurrentPhotoPath = null;
             }
         });
+    }
+
+    private void applyDim(@NonNull ViewGroup parent, double dimAmount){
+        Drawable dim = new ColorDrawable(Color.BLACK);
+        dim.setBounds(0, 0, parent.getWidth(), parent.getHeight());
+        dim.setAlpha((int) (255 * dimAmount));
+
+        ViewGroupOverlay overlay = parent.getOverlay();
+        overlay.add(dim);
+    }
+
+    public static void clearDim(@NonNull ViewGroup parent) {
+        ViewGroupOverlay overlay = parent.getOverlay();
+        overlay.clear();
     }
 
     private Shoe createShoeFromView(ViewGroup container) {
