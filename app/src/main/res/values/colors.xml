@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="basicColor">#A40042</color>
-    <color name="basicColorBrightOne">#CB0555</color>
-    <color name="basicColorBrightTwo">#D63576</color>
-    <color name="basicColorDarkOne">#850036</color>
-    <color name="basicColorDarkTwo">#600027</color>
+    <color name="basicColor">#FDC4E7</color>
+    <color name="basicColorTwo">#F288CD</color>
+    <color name="basicColorThree">#FF4FBB</color>
+    <color name="basicColorFour">#F9019A</color>
+    <color name="basicColorFive">#0D0D0D</color>
     <color name="basiccClorGreyOne">#262626</color>
     <color name="basicColorGreyTwo">#515151</color>
-    <color name="card_colorControlActivated">#8bcb0555</color>
+    <color name="card_colorControlActivated">#88f9019a</color>
 </resources>

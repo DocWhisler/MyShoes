@@ -1,22 +1,31 @@
 package com.tech.oma.myshoes;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.zip.Inflater;
+
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.tech.oma.myshoes.MainActivity.clearDim;
 
 public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapter.ShoeViewHolder> {
 
@@ -46,8 +55,31 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         shoeViewholder.tag.setText(shoe.getArt());
         shoeViewholder.description.setText(shoe.getDescription());
 
-        if(bitmap != null)
+        if(bitmap != null){
             shoeViewholder.shoeImage.setImageBitmap(bitmap);
+        }
+
+//        ImageView view = shoeViewholder.shoeImage;
+//        view.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Android PopUp Window
+//                LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
+//                ViewGroup container = (ViewGroup) inflater.inflate(R.layout.popup_picture, null);
+//                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) container.findViewById(R.id.coordinate_layout);
+//
+//                DisplayMetrics dm = new DisplayMetrics();
+//                ((MainActivity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+//                int width = dm.widthPixels;
+//                int height = dm.heightPixels;
+//
+//                PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+//                popupWindow.setWidth((int) (width*.8));
+//                popupWindow.setHeight((int) (width*.8));
+//                popupWindow.setAnimationStyle(R.style.style_popup_anim);
+//                popupWindow.showAtLocation(coordinatorLayout, Gravity.TOP, 0, 0);
+//            }
+//        });
 
         int id = shoe.getId();
         if (selectedIds.contains(id)){
@@ -58,6 +90,8 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
             //else remove selected item color.
             shoeViewholder.card.setForeground(new ColorDrawable(ContextCompat.getColor(context,android.R.color.transparent)));
         }
+
+
     }
 
     @Override
@@ -65,7 +99,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         return shoeList.size();
     }
 
-    public void refreshEvents(ArrayList<Shoe> shoes) {
+    public void refresh(ArrayList<Shoe> shoes) {
         this.shoeList.clear();
         this.shoeList.addAll(shoes);
         notifyDataSetChanged();

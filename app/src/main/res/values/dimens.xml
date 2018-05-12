@@ -1,9 +1,10 @@
 <resources>
     <dimen name="padding_main">10dp</dimen>
+    <dimen name="popwin_padding">20dp</dimen>
     <dimen name="popwin_foto_margin">12dp</dimen>
     <dimen name="popwin_text_margin">5dp</dimen>
-    <dimen name="popwin_price_margin_left">20dp</dimen>
     <dimen name="popwin_margin_bottom">10dp</dimen>
+    <dimen name="popwin_margin_ok_capture">20dp</dimen>
     <dimen name="card_image_margin">10dp</dimen>
     <dimen name="card_titel_margin_top">20dp</dimen>
     <dimen name="card_text_margin_top">5dp</dimen>

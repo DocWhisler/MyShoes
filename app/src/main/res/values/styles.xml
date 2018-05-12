@@ -15,23 +15,36 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="windowActionModeOverlay">true</item>
+        <item name="android:color">@color/basicColorTwo</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:color">@color/basicColorTwo</item>
+    </style>
 
     <style name="AppTheme.PopUpWindowStyle">
         <item name="android:windowIsTranslucent" >true</item>
-        <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
 
     <style name="AppTheme.TextStyle" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textSize">14sp</item>
-        <item name="android:textColor">#ffffff</item>
+        <item name="android:textColor">@color/basicColorFive</item>
     </style>
 
     <style name="AppTheme.TextHeaderStyle" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold|italic</item>
-        <item name="android:textColor">#f2c9da</item>
+        <item name="android:textColor">@color/basicColorFive</item>
+    </style>
+
+    <style name="AppTheme.TextButtons" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="style_popup_anim">
+        <item name="android:windowEnterAnimation">@anim/popup_show</item>
+        <item name="android:windowExitAnimation">@anim/popup_hide</item>
     </style>
 </resources>

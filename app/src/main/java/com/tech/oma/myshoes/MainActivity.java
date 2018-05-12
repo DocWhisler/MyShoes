@@ -4,10 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
@@ -25,10 +29,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,7 +41,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -127,8 +130,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 }
             }
         });
-
-        Toast.makeText(mContext, "Anz Schuhe " + this.shoeDao.getShoes().size() + "'\nMaxId '" + this.shoeDao.getMaxId() + "'", Toast.LENGTH_LONG).show();
     }
 
 
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 Toast.makeText(mContext,  "Settings", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_update:
-                shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
+                shoeRecyclerAdapter.refresh(shoeDao.getShoes());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                     }
                 }
 
-                this.shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
+                this.shoeRecyclerAdapter.refresh(shoeDao.getShoes());
                 this.shoeRecyclerAdapter.setSelectedIds(this.selectedIds);
 
                 if(selectedIds.size() <= 0){
@@ -228,24 +229,39 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         // PopUpWindow initialising
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
         int height = dm.heightPixels;
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-//        popupWindow.setWidth((int) (width*.8));
-//        popupWindow.setHeight((int) (height*.3));
+        popupWindow.setWidth((int) (width*.95));
+        popupWindow.setAnimationStyle(R.style.style_popup_anim);
+        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.3));
 
-        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.2));
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.update();
+
+        final ViewGroup root = (ViewGroup) getWindow().getDecorView().getRootView();
+        this.applyDim(root, .5);
+
+        // Close PopUp outside
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                if (tmpFile != null && tmpFile.exists()){
+                    tmpFile.delete();
+                }
+
+                mCurrentPhotoPath = null;
+                clearDim(root);
+                Toast.makeText(mContext, "Dismiss", Toast.LENGTH_LONG).show();
+            }
+        });
 
         // Close Button
         ImageButton ibClose = container.findViewById(R.id.closeBtn);
         ibClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tmpFile != null && tmpFile.exists()){
-                    tmpFile.deleteOnExit();
-                }
-
-                mCurrentPhotoPath = null;
                 popupWindow.dismiss();
             }
         });
@@ -257,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
             @Override
             public void onClick(View view) {
                 if(tmpFile != null && tmpFile.exists())
-                    tmpFile.deleteOnExit();
+                    tmpFile.delete();
                 dispatchTakePictureIntent();
             }
         });
@@ -272,10 +288,23 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 shoeDao.saveShoe(shoe);
 
                 popupWindow.dismiss();
-                shoeRecyclerAdapter.refreshEvents(shoeDao.getShoes());
-                mCurrentPhotoPath = null;
+                shoeRecyclerAdapter.refresh(shoeDao.getShoes());
             }
         });
+    }
+
+    private void applyDim(@NonNull ViewGroup parent, double dimAmount){
+        Drawable dim = new ColorDrawable(Color.BLACK);
+        dim.setBounds(0, 0, parent.getWidth(), parent.getHeight());
+        dim.setAlpha((int) (255 * dimAmount));
+
+        ViewGroupOverlay overlay = parent.getOverlay();
+        overlay.add(dim);
+    }
+
+    public static void clearDim(@NonNull ViewGroup parent) {
+        ViewGroupOverlay overlay = parent.getOverlay();
+        overlay.clear();
     }
 
     private Shoe createShoeFromView(ViewGroup container) {
@@ -415,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                     actionMode.finish(); //hide action mode.
                 }
                 this.shoeRecyclerAdapter.setSelectedIds(selectedIds);
-                this.shoeRecyclerAdapter.refreshEvents(this.shoeDao.getShoes());
+                this.shoeRecyclerAdapter.refresh(this.shoeDao.getShoes());
             }
         }
     }
