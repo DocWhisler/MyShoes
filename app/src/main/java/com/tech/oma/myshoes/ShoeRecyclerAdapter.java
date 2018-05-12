@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.design.widget.CoordinatorLayout;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,17 +17,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.zip.Inflater;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.tech.oma.myshoes.MainActivity.clearDim;
+import static java.security.AccessController.getContext;
 
 public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapter.ShoeViewHolder> {
 
@@ -48,7 +51,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
     public void onBindViewHolder(final ShoeViewHolder shoeViewholder, int position) {
         final Shoe shoe = shoeList.get(position);
         String price = ""+shoe.getPrice();
-        Bitmap bitmap = BitmapFactory.decodeFile(shoe.getImagePath());
+        final Bitmap bitmap = BitmapFactory.decodeFile(shoe.getImagePath());
 
         shoeViewholder.price.setText(price);
         shoeViewholder.titel.setText(shoe.getTitel());
@@ -56,30 +59,47 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         shoeViewholder.description.setText(shoe.getDescription());
 
         if(bitmap != null){
-            shoeViewholder.shoeImage.setImageBitmap(bitmap);
+            shoeViewholder.shoeImageView.setImageBitmap(bitmap);
         }
 
-//        ImageView view = shoeViewholder.shoeImage;
-//        view.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Android PopUp Window
-//                LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
-//                ViewGroup container = (ViewGroup) inflater.inflate(R.layout.popup_picture, null);
-//                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) container.findViewById(R.id.coordinate_layout);
-//
-//                DisplayMetrics dm = new DisplayMetrics();
-//                ((MainActivity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
-//                int width = dm.widthPixels;
-//                int height = dm.heightPixels;
-//
-//                PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-//                popupWindow.setWidth((int) (width*.8));
-//                popupWindow.setHeight((int) (width*.8));
-//                popupWindow.setAnimationStyle(R.style.style_popup_anim);
-//                popupWindow.showAtLocation(coordinatorLayout, Gravity.TOP, 0, 0);
-//            }
-//        });
+        shoeViewholder.shoeImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Android PopUp Window
+                LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                ViewGroup container = (ViewGroup) inflater.inflate(R.layout.popup_picture, null);
+
+                DisplayMetrics metrics = new DisplayMetrics();
+                WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                if (windowManager != null)
+                {
+                    windowManager.getDefaultDisplay().getMetrics(metrics);
+
+                    int width = metrics.widthPixels;
+                    int height = metrics.heightPixels;
+
+                    PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                    popupWindow.setWidth((int) (width*.8));
+                    popupWindow.setHeight((int) (height*.8));
+                    popupWindow.setAnimationStyle(R.style.style_popup_anim);
+                    popupWindow.showAtLocation(v , Gravity.CENTER, 0, 0);
+
+                    ImageView popupView = container.findViewById(R.id.popup_picture);
+                    popupView.setImageBitmap(bitmap);
+
+                    final ViewGroup root = (ViewGroup) v.getRootView();
+                    applyDim(root, .5);
+
+                    // Close PopUp outside
+                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                        @Override
+                        public void onDismiss() {
+                            clearDim(root);
+                        }
+                    });
+                }
+            }
+        });
 
         int id = shoe.getId();
         if (selectedIds.contains(id)){
@@ -97,6 +117,15 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
     @Override
     public int getItemCount() {
         return shoeList.size();
+    }
+
+    private void applyDim(@NonNull ViewGroup parent, double dimAmount){
+        Drawable dim = new ColorDrawable(Color.BLACK);
+        dim.setBounds(0, 0, parent.getWidth(), parent.getHeight());
+        dim.setAlpha((int) (255 * dimAmount));
+
+        ViewGroupOverlay overlay = parent.getOverlay();
+        overlay.add(dim);
     }
 
     public void refresh(ArrayList<Shoe> shoes) {
@@ -117,7 +146,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
     public static class ShoeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
         protected CardView card;
-        protected ImageView shoeImage;
+        protected ImageView shoeImageView;
         protected TextView titel;
         protected TextView tag;
         protected TextView price;
@@ -130,7 +159,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
             itemView.setOnClickListener(this);
 
             card = itemView.findViewById(R.id.card_view);
-            shoeImage = itemView.findViewById(R.id.cardshoeimage);
+            shoeImageView = itemView.findViewById(R.id.cardshoeimage);
             titel = itemView.findViewById(R.id.cardtitel);
             tag = itemView.findViewById(R.id.cardtag);
             price = itemView.findViewById(R.id.cardprice);

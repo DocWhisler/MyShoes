@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 }
             }));
 
-
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
         fab.setOnClickListener(new OnClickListener() {
