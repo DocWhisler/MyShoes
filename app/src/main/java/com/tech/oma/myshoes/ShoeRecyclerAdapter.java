@@ -1,6 +1,5 @@
 package com.tech.oma.myshoes;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,7 +27,6 @@ import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.tech.oma.myshoes.MainActivity.clearDim;
-import static java.security.AccessController.getContext;
 
 public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapter.ShoeViewHolder> {
 
