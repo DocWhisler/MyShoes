@@ -60,46 +60,46 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
 
         if(bitmap != null){
             shoeViewholder.shoeImageView.setImageBitmap(bitmap);
-        }
 
-        shoeViewholder.shoeImageView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Android PopUp Window
-                LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                ViewGroup container = (ViewGroup) inflater.inflate(R.layout.popup_picture, null);
+            shoeViewholder.shoeImageView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Android PopUp Window
+                    LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
+                    ViewGroup container = (ViewGroup) inflater.inflate(R.layout.popup_picture, null);
 
-                DisplayMetrics metrics = new DisplayMetrics();
-                WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-                if (windowManager != null)
-                {
-                    windowManager.getDefaultDisplay().getMetrics(metrics);
+                    DisplayMetrics metrics = new DisplayMetrics();
+                    WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+                    if (windowManager != null)
+                    {
+                        windowManager.getDefaultDisplay().getMetrics(metrics);
 
-                    int width = metrics.widthPixels;
-                    int height = metrics.heightPixels;
+                        int width = metrics.widthPixels;
+                        int height = metrics.heightPixels;
 
-                    PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                    popupWindow.setWidth((int) (width*.8));
-                    popupWindow.setHeight((int) (height*.8));
-                    popupWindow.setAnimationStyle(R.style.style_popup_anim);
-                    popupWindow.showAtLocation(v , Gravity.CENTER, 0, 0);
+                        PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+                        popupWindow.setWidth((int) (width*.8));
+                        popupWindow.setHeight((int) (height*.8));
+                        popupWindow.setAnimationStyle(R.style.style_popup_anim);
+                        popupWindow.showAtLocation(v , Gravity.CENTER, 0, 0);
 
-                    ImageView popupView = container.findViewById(R.id.popup_picture);
-                    popupView.setImageBitmap(bitmap);
+                        ImageView popupView = container.findViewById(R.id.popup_picture);
+                        popupView.setImageBitmap(bitmap);
 
-                    final ViewGroup root = (ViewGroup) v.getRootView();
-                    applyDim(root, .5);
+                        final ViewGroup root = (ViewGroup) v.getRootView();
+                        applyDim(root, .5);
 
-                    // Close PopUp outside
-                    popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                        @Override
-                        public void onDismiss() {
-                            clearDim(root);
-                        }
-                    });
+                        // Close PopUp outside
+                        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                clearDim(root);
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
 
         int id = shoe.getId();
         if (selectedIds.contains(id)){
@@ -110,8 +110,6 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
             //else remove selected item color.
             shoeViewholder.card.setForeground(new ColorDrawable(ContextCompat.getColor(context,android.R.color.transparent)));
         }
-
-
     }
 
     @Override
