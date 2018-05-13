@@ -50,7 +50,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements ActionMode.Callback{
 
     private Context mContext;
-    private CoordinatorLayout mCoordianteLayout;
+    private CoordinatorLayout mCoordinateLayout;
     private LayoutInflater inflater;
     private ViewGroup container;
     private String mCurrentPhotoPath;
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         setContentView(R.layout.activity_main);
 
         this.mContext = this.getApplicationContext();
-        this.mCoordianteLayout = findViewById(R.id.coordinate_layout);
+        this.mCoordinateLayout = findViewById(R.id.coordinate_layout);
         this.shoeDao = ShoeDaoImpl.getShoeDaoInstance(mContext);
 
         // Toolbar
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popupWindow.setWidth((int) (width*.95));
         popupWindow.setAnimationStyle(R.style.style_popup_anim);
-        popupWindow.showAtLocation(mCoordianteLayout, Gravity.TOP, 0, (int) (height*.3));
+        popupWindow.showAtLocation(mCoordinateLayout, Gravity.TOP, 0, (int) (height*.3));
 
         popupWindow.setOutsideTouchable(true);
         popupWindow.update();
