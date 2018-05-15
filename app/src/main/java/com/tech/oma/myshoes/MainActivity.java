@@ -146,10 +146,10 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()){
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                Toast.makeText(mContext,  "Settings", Toast.LENGTH_LONG).show();
-                return true;
+//            case R.id.action_settings:
+//                // User chose the "Settings" item, show the app settings UI...
+//                Toast.makeText(mContext,  "Settings", Toast.LENGTH_LONG).show();
+//                return true;
             case R.id.action_update:
                 shoeRecyclerAdapter.refresh(shoeDao.getShoes());
                 return true;
