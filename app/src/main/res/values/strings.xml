@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">MyShoes</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_delete">Delete</string>
     <string name="action_update">Update</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_share">Teilen</string>
+    <string name="action_edit">Teilen</string>
+    <string name="drawer_import_export">Import/Export</string>
+    <string name="drawer_settings">Einstellungen</string>
     <string name="popout_titel">Titel</string>
     <string name="popout_description">Beschreibung</string>
     <string name="popout_tag">Tag</string>

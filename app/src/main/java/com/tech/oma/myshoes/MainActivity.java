@@ -14,7 +14,9 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.FileProvider;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
     private Context mContext;
     private CoordinatorLayout mCoordinateLayout;
+    private DrawerLayout mDrawerLayout;
     private LayoutInflater inflater;
     private ViewGroup container;
     private String mCurrentPhotoPath;
@@ -113,6 +116,33 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 }
             }));
 
+        mDrawerLayout = findViewById(R.id.drawerlayout);
+        NavigationView mNavigationView = findViewById(R.id.navigationview);
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                // set item as selected to persist highlight
+                menuItem.setChecked(true);
+                // close drawer when item is tapped
+                mDrawerLayout.closeDrawers();
+
+                switch (menuItem.getItemId()){
+                    case R.id.drawer_settings:
+                        Toast.makeText(mContext, "Settings", Toast.LENGTH_LONG).show();
+                        return true;
+                    case R.id.drawer_update:
+                        shoeRecyclerAdapter.refresh(shoeDao.getShoes());
+                        Toast.makeText(mContext, "Refresh", Toast.LENGTH_LONG).show();
+                        return true;
+                    case R.id.drawer_import_export:
+                        Toast.makeText(mContext, "Import/Export", Toast.LENGTH_LONG).show();
+                        return true;
+                    default:
+                            return true;
+                }
+            }
+        });
+
         // ADD Button mit öffnen des PopUpWindows
         FloatingActionButton fab = findViewById(R.id.add);
         fab.setOnClickListener(new OnClickListener() {
@@ -146,10 +176,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()){
-//            case R.id.action_settings:
-//                // User chose the "Settings" item, show the app settings UI...
-//                Toast.makeText(mContext,  "Settings", Toast.LENGTH_LONG).show();
-//                return true;
             case R.id.action_update:
                 shoeRecyclerAdapter.refresh(shoeDao.getShoes());
                 return true;
@@ -202,6 +228,12 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                     actionMode.finish(); //hide action mode.
                 }
                 return true;
+            case R.id.action_share:
+                Toast.makeText(mContext, "Share", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_edit:
+                Toast.makeText(mContext, "Edit", Toast.LENGTH_LONG).show();
+                return true;
             default:
                 return false;
         }
@@ -252,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
                 mCurrentPhotoPath = null;
                 clearDim(root);
-                Toast.makeText(mContext, "Dismiss", Toast.LENGTH_LONG).show();
             }
         });
 
