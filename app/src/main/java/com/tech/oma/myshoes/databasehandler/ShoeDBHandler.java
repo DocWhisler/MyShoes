@@ -1,4 +1,6 @@
-package com.tech.oma.myshoes;
+package com.tech.oma.myshoes.databasehandler;
+
+import com.tech.oma.myshoes.dataobjects.Shoe;
 
 import java.util.ArrayList;
 
@@ -6,7 +8,7 @@ import java.util.ArrayList;
  * Created by Whisler on 25.02.2018.
  */
 
-public interface DataBaseHandler {
+public interface ShoeDBHandler {
 
     // Adding new Shoe
     void addShoe(Shoe shoe);

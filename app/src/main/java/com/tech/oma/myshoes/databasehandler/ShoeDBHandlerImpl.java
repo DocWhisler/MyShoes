@@ -1,4 +1,4 @@
-package com.tech.oma.myshoes;
+package com.tech.oma.myshoes.databasehandler;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,13 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.tech.oma.myshoes.dataobjects.Shoe;
+
 import java.util.ArrayList;
 
 /**
  * Created by Whisler on 25.02.2018.
  */
 
-public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHandler {
+public class ShoeDBHandlerImpl extends SQLiteOpenHelper implements ShoeDBHandler {
 
     // All Static variables
     // Database Version
@@ -34,12 +36,12 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
     private static final String KEY_PRICE = "price";
     private static final String DBEXCEPTION = "Database error";
 
-    private static DataBaseHandlerImpl instance;
+    private static ShoeDBHandlerImpl instance;
     private static SQLiteDatabase readableDatabase;
     private static SQLiteDatabase writableDatabase;
 
 
-    private DataBaseHandlerImpl(Context context) {
+    private ShoeDBHandlerImpl(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         writableDatabase = this.getWritableDatabase();
         readableDatabase = this.getReadableDatabase();
@@ -66,9 +68,9 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
         onCreate(db);
     }
 
-    public static synchronized DataBaseHandlerImpl getDbHandlerInstance(Context context) {
+    public static synchronized ShoeDBHandlerImpl getDbHandlerInstance(Context context) {
         if (instance == null){
-            instance = new DataBaseHandlerImpl(context);
+            instance = new ShoeDBHandlerImpl(context);
         }
         return instance;
     }
@@ -81,7 +83,7 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
-            values.put(KEY_ART, shoe.getArt());
+            values.put(KEY_ART, shoe.getTag());
             values.put(KEY_PRICE, shoe.getPrice());
 
             writableDatabase.insert(TABLE_SHOES, null, values);
@@ -175,7 +177,7 @@ public class DataBaseHandlerImpl extends SQLiteOpenHelper implements DataBaseHan
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
             values.put(KEY_IMAGEPATH, shoe.getImagePath());
-            values.put(KEY_ART, shoe.getArt());
+            values.put(KEY_ART, shoe.getTag());
             values.put(KEY_PRICE, shoe.getPrice());
             writableDatabase.update(TABLE_SHOES, values, KEY_ID + " = ?", new String[]{String.valueOf(shoe.getId())});
         }

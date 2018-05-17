@@ -1,4 +1,4 @@
-package com.tech.oma.myshoes;
+package com.tech.oma.myshoes.dataobjects;
 
 import java.util.ArrayList;
 

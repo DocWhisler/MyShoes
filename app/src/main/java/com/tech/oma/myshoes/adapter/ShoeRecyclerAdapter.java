@@ -1,4 +1,4 @@
-package com.tech.oma.myshoes;
+package com.tech.oma.myshoes.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -22,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.tech.oma.myshoes.R;
+import com.tech.oma.myshoes.dataobjects.Shoe;
 
 import java.util.ArrayList;
 
@@ -53,7 +56,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
 
         shoeViewholder.price.setText(price);
         shoeViewholder.titel.setText(shoe.getTitel());
-        shoeViewholder.tag.setText(shoe.getArt());
+        shoeViewholder.tag.setText(shoe.getTag());
         shoeViewholder.description.setText(shoe.getDescription());
 
         if(bitmap != null){

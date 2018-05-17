@@ -1,6 +1,4 @@
-package com.tech.oma.myshoes;
-
-import java.util.Calendar;
+package com.tech.oma.myshoes.dataobjects;
 
 /**
  * Created by Whisler on 25.02.2018.
@@ -18,20 +16,23 @@ public class Shoe {
 
     private String imagePath;
 
-    private String art;
+    private String tag;
 
     private double price;
 
-    private boolean isSelected;
 
-    public Shoe(int id, String titel, String description, String imagePath, String art, double price) {
+    public Shoe(int id, String titel, String description, String imagePath, String tag, double price) {
+        this.oid = "SHOE-"+id;
         this.id = id;
         this.titel = titel;
         this.description = description;
         this.imagePath = imagePath;
-        this.art = art;
+        this.tag = tag;
         this.price = price;
-        this.isSelected = false;
+    }
+
+    public String getOid() {
+        return oid;
     }
 
     public int getId() {
@@ -66,12 +67,12 @@ public class Shoe {
         this.imagePath = imagePath;
     }
 
-    public String getArt() {
-        return art;
+    public String getTag() {
+        return tag;
     }
 
-    public void setArt(String art) {
-        this.art = art;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
     public double getPrice() {
@@ -82,11 +83,4 @@ public class Shoe {
         this.price = price;
     }
 
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean isSelected) {
-        this.isSelected = isSelected;
-    }
 }

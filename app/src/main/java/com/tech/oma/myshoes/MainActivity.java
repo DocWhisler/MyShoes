@@ -39,6 +39,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tech.oma.myshoes.adapter.ShoeRecyclerAdapter;
+import com.tech.oma.myshoes.dataobjects.Shoe;
+import com.tech.oma.myshoes.dataobjects.ShoeDao;
+import com.tech.oma.myshoes.dataobjects.ShoeDaoImpl;
+import com.tech.oma.myshoes.listener.RecyclerItemClickListener;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;

@@ -1,6 +1,8 @@
-package com.tech.oma.myshoes;
+package com.tech.oma.myshoes.dataobjects;
 
 import android.content.Context;
+
+import com.tech.oma.myshoes.databasehandler.ShoeDBHandlerImpl;
 
 import java.util.ArrayList;
 
@@ -10,12 +12,12 @@ import java.util.ArrayList;
 
 public class ShoeDaoImpl implements ShoeDao {
 
-    private DataBaseHandlerImpl dbHandlerinstance;
+    private ShoeDBHandlerImpl dbHandlerinstance;
 
     private static ShoeDaoImpl shoeDaoInstance;
 
     private ShoeDaoImpl(Context context) {
-        this.dbHandlerinstance = DataBaseHandlerImpl.getDbHandlerInstance(context);
+        this.dbHandlerinstance = ShoeDBHandlerImpl.getDbHandlerInstance(context);
     }
 
     public static ShoeDao getShoeDaoInstance(Context context){

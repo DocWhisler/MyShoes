@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 /**
  * Created by benja on 26.02.2018.
  */
-public class DataBaseHandlerTest {
+public class ShoeDBHandlerTest {
     @Test
     public void onCreate() throws Exception {
     }
