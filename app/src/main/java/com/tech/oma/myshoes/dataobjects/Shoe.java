@@ -1,5 +1,7 @@
 package com.tech.oma.myshoes.dataobjects;
 
+import java.util.Date;
+
 /**
  * Created by Whisler on 25.02.2018.
  */
@@ -20,9 +22,12 @@ public class Shoe {
 
     private double price;
 
+    private Date erzeugt;
+
 
     public Shoe(int id, String titel, String description, String imagePath, String tag, double price) {
         this.oid = "SHOE-"+id;
+        this.erzeugt = new Date();
         this.id = id;
         this.titel = titel;
         this.description = description;
@@ -83,4 +88,11 @@ public class Shoe {
         this.price = price;
     }
 
+    public Date getErzeugt() {
+        return erzeugt;
+    }
+
+    public void setErzeugt(Date erzeugt) {
+        this.erzeugt = erzeugt;
+    }
 }
