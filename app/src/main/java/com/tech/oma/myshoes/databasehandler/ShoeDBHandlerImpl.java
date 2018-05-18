@@ -28,6 +28,7 @@ public class ShoeDBHandlerImpl extends SQLiteOpenHelper implements ShoeDBHandler
     private static final String TABLE_SHOES = "shoes";
 
     // Shoe Table Columns names
+    private static final String KEY_OID = "oid";
     private static final String KEY_ID = "id";
     private static final String KEY_TITEL = "titel";
     private static final String KEY_DESCRIPTION = "description";
@@ -50,7 +51,8 @@ public class ShoeDBHandlerImpl extends SQLiteOpenHelper implements ShoeDBHandler
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_SHOES_TABLE = "CREATE TABLE " + TABLE_SHOES + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_OID + " TEXT PRIMARY KEY,"
+                + KEY_ID + " INTEGER,"
                 + KEY_TITEL + " TEXT,"
                 + KEY_DESCRIPTION + " TEXT,"
                 + KEY_IMAGEPATH + " TEXT,"
@@ -79,6 +81,7 @@ public class ShoeDBHandlerImpl extends SQLiteOpenHelper implements ShoeDBHandler
     public void addShoe(Shoe shoe) {
         if(writableDatabase.isOpen()){
             ContentValues values = new ContentValues();
+            values.put(KEY_OID, shoe.getOid());
             values.put(KEY_ID, shoe.getId());
             values.put(KEY_TITEL, shoe.getTitel());
             values.put(KEY_DESCRIPTION, shoe.getDescription());
@@ -119,6 +122,7 @@ public class ShoeDBHandlerImpl extends SQLiteOpenHelper implements ShoeDBHandler
             Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
             throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
         }
+        shoe.setOid("SHOE-"+shoe.getId());
         return shoe;
     }
 
@@ -140,6 +144,7 @@ public class ShoeDBHandlerImpl extends SQLiteOpenHelper implements ShoeDBHandler
                             cursor.getString(4),
                             cursor.getDouble(5));
 
+                    shoe.setOid("SHOE-"+shoe.getId());
                     shoes.add(shoe);
                 }while (cursor.moveToNext());
             }
@@ -153,7 +158,7 @@ public class ShoeDBHandlerImpl extends SQLiteOpenHelper implements ShoeDBHandler
 
     @Override
     public int getShoesCount() {
-        Cursor cursor = null;
+        Cursor cursor;
         String countQuery = "SELECT * FROM " + TABLE_SHOES;
         if (readableDatabase.isOpen()) {
             cursor = readableDatabase.rawQuery(countQuery, null);
