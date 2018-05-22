@@ -112,7 +112,7 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
             popupView.setImageBitmap(bitmap);
 
             final ViewGroup root = (ViewGroup) v.getRootView();
-            applyDim(root);
+            applyDim(root, .5);
 
             // Close PopUp outside
             popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -124,10 +124,10 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         }
     }
 
-    private void applyDim(@NonNull ViewGroup parent){
+    private void applyDim(@NonNull ViewGroup parent, double trimAmmount){
         Drawable dim = new ColorDrawable(Color.BLACK);
         dim.setBounds(0, 0, parent.getWidth(), parent.getHeight());
-        dim.setAlpha((int) (255 * .5));
+        dim.setAlpha((int) (255 * trimAmmount));
 
         ViewGroupOverlay overlay = parent.getOverlay();
         overlay.add(dim);
