@@ -3,11 +3,8 @@ package com.tech.oma.myshoes.dataobjects;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.tech.oma.myshoes.databasehandler.DataBaseHelper;
-import com.tech.oma.myshoes.databasehandler.ShoeDBHandlerImpl;
 import com.tech.oma.myshoes.databasehandler.ShoeDbDao;
 
 import java.util.ArrayList;

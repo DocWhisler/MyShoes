@@ -61,43 +61,11 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
 
         if(bitmap != null){
             shoeViewholder.shoeImageView.setImageBitmap(bitmap);
-
             shoeViewholder.shoeImageView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Android PopUp Window
-                    LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
-                    ViewGroup container = (ViewGroup) inflater.inflate(R.layout.popup_picture, null);
-
-                    DisplayMetrics metrics = new DisplayMetrics();
-                    WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-                    if (windowManager != null)
-                    {
-                        windowManager.getDefaultDisplay().getMetrics(metrics);
-
-                        int width = metrics.widthPixels;
-                        int height = metrics.heightPixels;
-
-                        PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-                        popupWindow.setWidth((int) (width*.8));
-                        popupWindow.setHeight((int) (height*.8));
-                        popupWindow.setAnimationStyle(R.style.style_popup_anim);
-                        popupWindow.showAtLocation(v , Gravity.CENTER, 0, 0);
-
-                        ImageView popupView = container.findViewById(R.id.popup_picture);
-                        popupView.setImageBitmap(bitmap);
-
-                        final ViewGroup root = (ViewGroup) v.getRootView();
-                        applyDim(root, .5);
-
-                        // Close PopUp outside
-                        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                            @Override
-                            public void onDismiss() {
-                                clearDim(root);
-                            }
-                        });
-                    }
+                // Android PopUp Window
+                createPopUpWindow(v, bitmap);
                 }
             });
         }
@@ -118,10 +86,48 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         return shoeList.size();
     }
 
-    private void applyDim(@NonNull ViewGroup parent, double dimAmount){
+    private void createPopUpWindow(View v, Bitmap bitmap) {
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        ViewGroup container = null;
+        if(inflater != null)
+            container = (ViewGroup) inflater.inflate(R.layout.popup_picture, null);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (windowManager != null && container != null)
+        {
+            windowManager.getDefaultDisplay().getMetrics(metrics);
+
+            int width = metrics.widthPixels;
+            int height = metrics.heightPixels;
+
+            PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            popupWindow.setWidth((int) (width*.8));
+            popupWindow.setHeight((int) (height*.8));
+            popupWindow.setAnimationStyle(R.style.style_popup_anim);
+            popupWindow.showAtLocation(v , Gravity.CENTER, 0, 0);
+
+            ImageView popupView = container.findViewById(R.id.popup_picture);
+            popupView.setImageBitmap(bitmap);
+
+            final ViewGroup root = (ViewGroup) v.getRootView();
+            applyDim(root);
+
+            // Close PopUp outside
+            popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    clearDim(root);
+                }
+            });
+        }
+    }
+
+    private void applyDim(@NonNull ViewGroup parent){
         Drawable dim = new ColorDrawable(Color.BLACK);
         dim.setBounds(0, 0, parent.getWidth(), parent.getHeight());
-        dim.setAlpha((int) (255 * dimAmount));
+        dim.setAlpha((int) (255 * .5));
 
         ViewGroupOverlay overlay = parent.getOverlay();
         overlay.add(dim);
@@ -141,18 +147,21 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         this.selectedIds = selectedIds;
     }
 
+    private ArrayList<Shoe> getShoeList() {
+        return shoeList;
+    }
+
     // INNER CLASS ViewHolder
-    public static class ShoeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+    public class ShoeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
 
-        protected CardView card;
-        protected ImageView shoeImageView;
-        protected TextView titel;
-        protected TextView tag;
-        protected TextView price;
-        protected TextView description;
-        protected int pos = -1;
+        private CardView card;
+        private ImageView shoeImageView;
+        private TextView titel;
+        private TextView tag;
+        private TextView price;
+        private TextView description;
 
-        public ShoeViewHolder(View itemView){
+        private ShoeViewHolder(View itemView){
             super(itemView);
 
             itemView.setOnClickListener(this);
@@ -173,8 +182,14 @@ public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapte
         @Override
         public void onClick(View v) {
             int pos = getAdapterPosition();
-            pos++;
-            Toast.makeText(itemView.getContext(), "Position:" + pos , Toast.LENGTH_LONG).show();
+
+            if(pos != RecyclerView.NO_POSITION){
+                Shoe shoe = getShoeList().get(pos);
+                String message = "OID '" + shoe.getOid() + "' Erzeugt '" + shoe.getCreated() + "'";
+                Toast.makeText(itemView.getContext(), message , Toast.LENGTH_LONG).show();
+            }
+            else
+                Toast.makeText(itemView.getContext(), "NISCHT!!!" , Toast.LENGTH_LONG).show();
         }
     }
 }

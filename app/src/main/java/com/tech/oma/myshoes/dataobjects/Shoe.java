@@ -40,7 +40,7 @@ public class Shoe {
         return oid;
     }
 
-    public void setOid(String oid) {
+    protected void setOid(String oid) {
         this.oid = oid;
     }
 
@@ -48,7 +48,7 @@ public class Shoe {
         return id;
     }
 
-    public void setId(int id) {
+    protected void setId(int id) {
         this.id = id;
     }
 
@@ -56,7 +56,7 @@ public class Shoe {
         return titel;
     }
 
-    public void setTitel(String titel) {
+    protected void setTitel(String titel) {
         this.titel = titel;
     }
 
@@ -64,7 +64,7 @@ public class Shoe {
         return description;
     }
 
-    public void setDescription(String description) {
+    protected void setDescription(String description) {
         this.description = description;
     }
 
@@ -72,7 +72,7 @@ public class Shoe {
         return imagePath;
     }
 
-    public void setImagePath(String imagePath) {
+    protected void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
@@ -80,7 +80,7 @@ public class Shoe {
         return tag;
     }
 
-    public void setTag(String tag) {
+    protected void setTag(String tag) {
         this.tag = tag;
     }
 
@@ -88,7 +88,7 @@ public class Shoe {
         return price;
     }
 
-    public void setPrice(double price) {
+    protected void setPrice(double price) {
         this.price = price;
     }
 
@@ -96,7 +96,7 @@ public class Shoe {
         return created;
     }
 
-    public void setCreated(Date created) {
+    protected void setCreated(Date created) {
         this.created = created;
     }
 }
