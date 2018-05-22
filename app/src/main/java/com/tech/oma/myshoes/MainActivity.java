@@ -41,8 +41,8 @@ import android.widget.Toast;
 
 import com.tech.oma.myshoes.adapter.ShoeRecyclerAdapter;
 import com.tech.oma.myshoes.dataobjects.Shoe;
+import com.tech.oma.myshoes.dataobjects.IShoeDao;
 import com.tech.oma.myshoes.dataobjects.ShoeDao;
-import com.tech.oma.myshoes.dataobjects.ShoeDaoImpl;
 import com.tech.oma.myshoes.listener.RecyclerItemClickListener;
 
 import java.io.File;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
         this.mContext = this.getApplicationContext();
         this.mCoordinateLayout = findViewById(R.id.coordinate_layout);
-        this.shoeDao = ShoeDaoImpl.getShoeDaoInstance(mContext);
+        this.shoeDao = new ShoeDao(this);
 
         // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         lim.setOrientation(LinearLayoutManager.VERTICAL);
 
         // Custom Card Adapter
-        this.shoeRecyclerAdapter = new ShoeRecyclerAdapter(mContext, this.shoeDao.getShoes());
+        this.shoeRecyclerAdapter = new ShoeRecyclerAdapter(mContext, shoeDao.getAllShoes());
         shoeRecycleView.setAdapter(shoeRecyclerAdapter);
 
         shoeRecycleView.addOnItemTouchListener(
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                         Toast.makeText(mContext, "Settings", Toast.LENGTH_LONG).show();
                         return true;
                     case R.id.drawer_update:
-                        shoeRecyclerAdapter.refresh(shoeDao.getShoes());
+                        shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
                         Toast.makeText(mContext, "Refresh", Toast.LENGTH_LONG).show();
                         return true;
                     case R.id.drawer_import_export:
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
         switch (item.getItemId()){
             case R.id.action_update:
-                shoeRecyclerAdapter.refresh(shoeDao.getShoes());
+                shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -221,12 +221,12 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                             file.delete();
                         }
 
-                        this.shoeDao.deleteShoe(shoe);
+                        shoeDao.deleteShoe(shoe);
                         iter.remove();
                     }
                 }
 
-                this.shoeRecyclerAdapter.refresh(shoeDao.getShoes());
+                this.shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
                 this.shoeRecyclerAdapter.setSelectedIds(this.selectedIds);
 
                 if(selectedIds.size() <= 0){
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 shoeDao.saveShoe(shoe);
 
                 popupWindow.dismiss();
-                shoeRecyclerAdapter.refresh(shoeDao.getShoes());
+                shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
             }
         });
     }
@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
             return;
 
         String date = new SimpleDateFormat("yyyyMMdd", Locale.GERMANY).format(new Date());
-        int id = shoeDao.getMaxId()+1;
+        int id = this.shoeDao.getMaxId()+1;
         File filePath = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         String fileName = "/Shoe_" + id + date + ".jpg";
 
@@ -480,7 +480,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                     actionMode.finish(); //hide action mode.
                 }
                 this.shoeRecyclerAdapter.setSelectedIds(selectedIds);
-                this.shoeRecyclerAdapter.refresh(this.shoeDao.getShoes());
+                this.shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
             }
         }
     }

@@ -19,31 +19,31 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "myShoesManager";
 
     // Shoe table name
-    private static final String TABLE_SHOES = "shoes";
-    private static final String TABLE_LISTS = "lists";
-    private static final String TABLE_SHOE2LISTS = "shoe2lists";
+    public static final String TABLE_SHOES = "shoes";
+    public static final String TABLE_LISTS = "lists";
+    public static final String TABLE_SHOE2LISTS = "shoe2lists";
 
     // Shoe Table Columns names
-    private static final String SHOE_OID = "oid";
-    private static final String SHOE_ID = "id";
-    private static final String SHOE_TITEL = "titel";
-    private static final String SHOE_DESCRIPTION = "description";
-    private static final String SHOE_IMAGEPATH = "imagePath";
-    private static final String SHOE_TAG = "tag";
-    private static final String SHOE_PRICE = "price";
-    private static final String SHOE_CREATED = "created";
+    public static final String SHOE_OID = "oid";
+    public static final String SHOE_ID = "id";
+    public static final String SHOE_TITEL = "titel";
+    public static final String SHOE_DESCRIPTION = "description";
+    public static final String SHOE_IMAGEPATH = "imagePath";
+    public static final String SHOE_TAG = "tag";
+    public static final String SHOE_PRICE = "price";
+    public static final String SHOE_CREATED = "created";
 
     // Lists Table
-    private static final String LISTS_OID = "oid";
-    private static final String LISTS_ID = "id";
-    private static final String LISTS_NAME = "name";
-    private static final String LISTS_CREATED = "created";
+    public static final String LISTS_OID = "oid";
+    public static final String LISTS_ID = "id";
+    public static final String LISTS_NAME = "name";
+    public static final String LISTS_CREATED = "created";
 
     // Shoe2Lists Table
-    private static final String SHOE2LISTS_OID = "oid";
-    private static final String SHOE2LISTS_SHOE = "shoe";
-    private static final String SHOE2LISTS_LIST = "list";
-    private static final String SHOE2LISTS_CREATED = "created";
+    public static final String SHOE2LISTS_OID = "oid";
+    public static final String SHOE2LISTS_SHOE = "shoe";
+    public static final String SHOE2LISTS_LIST = "list";
+    public static final String SHOE2LISTS_CREATED = "created";
 
     // Create Tables
     private static final String CREATE_SHOE_TABLE = "CREATE TABLE " + TABLE_SHOES + "("
