@@ -13,6 +13,10 @@ public class Shoe2List {
     private Date created;
 
     public Shoe2List(Shoe shoe, ShoeList list){
+        if(shoe == null || list == null){
+            throw new Error("Schuh oder Liste null");
+        }
+
         this.oid = "S"+shoe.getId()+"L"+list.getId();
         this.created = new Date();
         this.shoe = shoe;
