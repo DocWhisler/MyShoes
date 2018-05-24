@@ -1,10 +1,28 @@
 package com.tech.oma.myshoes.dataobjects;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.util.Log;
 
 import com.tech.oma.myshoes.databasehandler.Shoe2ListDbDao;
 
 import java.util.ArrayList;
+import java.util.Date;
+
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.LISTS_OID;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE2LISTS_LIST;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE2LISTS_SHOE;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_CREATED;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_DESCRIPTION;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_ID;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_IMAGEPATH;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_OID;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_PRICE;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_TAG;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_TITEL;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.TABLE_LISTS;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.TABLE_SHOE2LISTS;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.TABLE_SHOES;
 
 public class Shoe2ListDao extends Shoe2ListDbDao implements IShoe2ListDao {
 
@@ -16,44 +34,49 @@ public class Shoe2ListDao extends Shoe2ListDbDao implements IShoe2ListDao {
 
     @Override
     public ArrayList<Shoe> getShoes4List(ShoeList list) {
-//        ArrayList<Shoe> shoes = new ArrayList<>();
-//        String query = "SELECT " +
-//                SHOE_OID +
-//                ", " + SHOE_ID +
-//                ", " + SHOE_TITEL +
-//                ", " + SHOE_DESCRIPTION +
-//                ", " + SHOE_IMAGEPATH +
-//                ", " + SHOE_TAG +
-//                ", " + SHOE_PRICE+
-//                ", " + SHOE_CREATED +
-//                " FROM " + TABLE_SHOES;
-//
-//        if (database.isOpen()){
-//            Cursor cursor = database.rawQuery(query, null);
-//
-//            if(cursor.moveToFirst()) {
-//                do {
-//                    Shoe shoe = new Shoe(
-//                            cursor.getInt(1),
-//                            cursor.getString(2),
-//                            cursor.getString(3),
-//                            cursor.getString(4),
-//                            cursor.getString(5),
-//                            cursor.getDouble(6));
-//
-//                    shoe.setOid(cursor.getString(0));
-//                    shoe.setCreated(new Date(cursor.getLong(7)));
-//                    shoes.add(shoe);
-//                }while (cursor.moveToNext());
-//            }
-//        }
-//        else {
-//            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
-//            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
-//        }
-//        return shoes;
-        return null;
+        ArrayList<Shoe> shoes = new ArrayList<>();
+        String query = "SELECT " +
+                             TABLE_SHOES + "." + SHOE_OID + ", " +
+                             TABLE_SHOES + "." + SHOE_ID + ", " +
+                             TABLE_SHOES + "." + SHOE_TITEL + ", " +
+                             TABLE_SHOES + "." + SHOE_DESCRIPTION + ", " +
+                             TABLE_SHOES + "." + SHOE_IMAGEPATH + ", " +
+                             TABLE_SHOES + "." + SHOE_TAG + ", " +
+                             TABLE_SHOES + "." + SHOE_PRICE+ ", " +
+                             TABLE_SHOES + "." + SHOE_CREATED +
+                         " FROM " +
+                                TABLE_SHOE2LISTS + " shoe2List" +
+                         " INNER JOIN " + TABLE_SHOES + " shoe ON " +
+                               "shoe2List." + SHOE2LISTS_SHOE + "=" + "shoe." + SHOE_OID +
+                         "INNER JOIN " + TABLE_LISTS + " list ON " +
+                                "list." + SHOE2LISTS_LIST + "=" + "list." + LISTS_OID +
+                         "WHERE " +
+                                "shoe2List." + SHOE2LISTS_LIST + "=" + list.getOid();
 
+        if (database.isOpen()){
+            Cursor cursor = database.rawQuery(query, null);
+
+            if(cursor.moveToFirst()) {
+                do {
+                    Shoe shoe = new Shoe(
+                            cursor.getInt(1),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getString(4),
+                            cursor.getString(5),
+                            cursor.getDouble(6));
+
+                    shoe.setOid(cursor.getString(0));
+                    shoe.setCreated(new Date(cursor.getLong(7)));
+                    shoes.add(shoe);
+                }while (cursor.moveToNext());
+            }
+        }
+        else {
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
+        }
+        return shoes;
     }
 
     @Override

@@ -6,9 +6,9 @@ public class Shoe2List {
 
     private String oid;
 
-    private Shoe shoe;
+    private String shoeOid;
 
-    private ShoeList shoeList;
+    private String shoeListOid;
 
     private Date created;
 
@@ -19,8 +19,8 @@ public class Shoe2List {
 
         this.oid = "S"+shoe.getId()+"L"+list.getId();
         this.created = new Date();
-        this.shoe = shoe;
-        this.shoeList = list;
+        this.shoeOid = shoe.getOid();
+        this.shoeListOid = list.getOid();
     }
 
     public String getOid() {
@@ -31,20 +31,20 @@ public class Shoe2List {
         this.oid = oid;
     }
 
-    public Shoe getShoe() {
-        return shoe;
+    public String getShoeOid() {
+        return shoeOid;
     }
 
-    protected void setShoe(Shoe shoe) {
-        this.shoe = shoe;
+    protected void setShoeOid(String shoeOid) {
+        this.shoeOid = shoeOid;
     }
 
-    public ShoeList getShoeList() {
-        return shoeList;
+    public String getShoeListOid() {
+        return shoeListOid;
     }
 
-    protected void setShoeList(ShoeList shoeList) {
-        this.shoeList = shoeList;
+    protected void setShoeListOid(String shoeListOid) {
+        this.shoeListOid = shoeListOid;
     }
 
     public Date getCreated() {
