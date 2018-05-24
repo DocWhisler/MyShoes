@@ -38,6 +38,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String LISTS_ID = "id";
     public static final String LISTS_NAME = "name";
     public static final String LISTS_CREATED = "created";
+    public static final String LISTS_AKTIV = "aktiv";
 
     // Shoe2Lists Table
     public static final String SHOE2LISTS_OID = "oid";
@@ -60,7 +61,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             + LISTS_OID + " TEXT PRIMARY KEY,"
             + LISTS_ID + " INTEGER,"
             + LISTS_NAME + " TEXT,"
-            + LISTS_CREATED + " INTEGER)";
+            + LISTS_CREATED + " INTEGER,"
+            + LISTS_AKTIV + " INTEGER DEFAULT 0)";
 
     private static final String CREATE_SHOE2LIST_TABLE = "CREATE TABLE " + TABLE_SHOE2LISTS + "("
             + SHOE2LISTS_OID + " TEXT PRIMARY KEY,"

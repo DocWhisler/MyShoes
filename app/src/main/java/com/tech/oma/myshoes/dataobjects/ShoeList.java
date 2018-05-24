@@ -12,11 +12,14 @@ public class ShoeList {
 
     private Date created;
 
-    public ShoeList(int id, String name){
+    private boolean aktiv;
+
+    public ShoeList(int id, String name, boolean aktiv){
         this.oid = "LIST-"+id;
         this.created = new Date();
         this.id = id;
         this.name = name;
+        this.aktiv = aktiv;
     }
 
     public String getOid() {
@@ -49,5 +52,13 @@ public class ShoeList {
 
     protected void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isAktiv() {
+        return aktiv;
+    }
+
+    protected void setAktiv(boolean aktiv) {
+        this.aktiv = aktiv;
     }
 }

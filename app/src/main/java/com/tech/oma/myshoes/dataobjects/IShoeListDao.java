@@ -1,10 +1,14 @@
 package com.tech.oma.myshoes.dataobjects;
 
+import java.util.ArrayList;
+
 public interface IShoeListDao {
 
     ShoeList getShoeList(int id);
 
-    ShoeList createShoeList(String name);
+    ShoeList createShoeList(String name, boolean aktiv);
+
+    ArrayList<ShoeList> getAktivLists();
 
     void saveShoeList(ShoeList shoeList);
 
