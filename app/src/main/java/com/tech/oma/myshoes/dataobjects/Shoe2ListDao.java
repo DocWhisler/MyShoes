@@ -1,5 +1,6 @@
 package com.tech.oma.myshoes.dataobjects;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
@@ -10,7 +11,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.LISTS_OID;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE2LISTS_CREATED;
 import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE2LISTS_LIST;
+import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE2LISTS_OID;
 import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE2LISTS_SHOE;
 import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_CREATED;
 import static com.tech.oma.myshoes.databasehandler.DataBaseHelper.SHOE_DESCRIPTION;
@@ -81,26 +84,51 @@ public class Shoe2ListDao extends Shoe2ListDbDao implements IShoe2ListDao {
 
     @Override
     public Shoe2List createShoe2List(Shoe shoe, ShoeList list) {
-        return null;
+        return new Shoe2List(shoe, list);
     }
 
     @Override
-    public void saveShoe2List(ShoeList shoeList) {
+    public void saveShoe2List(Shoe2List shoe2List) {
+        if(database.isOpen()){
+            ContentValues values = new ContentValues();
+            values.put(SHOE2LISTS_OID, shoe2List.getOid());
+            values.put(SHOE2LISTS_SHOE, shoe2List.getShoeOid());
+            values.put(SHOE2LISTS_LIST, shoe2List.getShoeListOid());
+            values.put(SHOE2LISTS_CREATED, shoe2List.getCreated().getTime());
 
+            database.insert(TABLE_SHOE2LISTS, null, values);
+        }
+        else{
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
+        }
     }
 
     @Override
-    public void updateShoeList(Shoe2List shoe2List) {
+    public void updateShoe2List(Shoe2List shoe2List) {
+        if(database.isOpen()){
+            ContentValues values = new ContentValues();
+            values.put(SHOE2LISTS_OID, shoe2List.getOid());
+            values.put(SHOE2LISTS_SHOE, shoe2List.getShoeOid());
+            values.put(SHOE2LISTS_LIST, shoe2List.getShoeListOid());
+            values.put(SHOE2LISTS_CREATED, shoe2List.getCreated().getTime());
 
+            database.update(TABLE_SHOE2LISTS, values, SHOE2LISTS_OID + " = ?", new String[]{String.valueOf(shoe2List.getOid())});
+        }
+        else{
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
+        }
     }
 
     @Override
     public void deleteShoe2List(Shoe2List shoe2List) {
-
-    }
-
-    @Override
-    public int getMaxId() {
-        return 0;
+        if(database.isOpen()) {
+            database.delete(TABLE_SHOE2LISTS, SHOE2LISTS_OID + " = ?", new String[]{String.valueOf(shoe2List.getOid())});
+        }
+        else{
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
+        }
     }
 }

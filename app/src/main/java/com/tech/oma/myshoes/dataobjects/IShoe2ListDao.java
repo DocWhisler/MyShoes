@@ -8,11 +8,9 @@ public interface IShoe2ListDao {
 
     Shoe2List createShoe2List(Shoe shoe, ShoeList list);
 
-    void saveShoe2List(ShoeList shoeList);
+    void saveShoe2List(Shoe2List shoe2List);
 
-    void updateShoeList(Shoe2List shoe2List);
+    void updateShoe2List(Shoe2List shoe2List);
 
     void deleteShoe2List(Shoe2List shoe2List);
-
-    int getMaxId();
 }
