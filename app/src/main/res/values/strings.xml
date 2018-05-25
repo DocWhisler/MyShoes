@@ -6,6 +6,7 @@
     <string name="action_edit">Teilen</string>
     <string name="drawer_import_export">Import/Export</string>
     <string name="drawer_settings">Einstellungen</string>
+    <string name="drawer_listmanagement">Listenverwaltung</string>
     <string name="popout_titel">Titel</string>
     <string name="popout_description">Beschreibung</string>
     <string name="popout_tag">Tag</string>
