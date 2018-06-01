@@ -29,7 +29,7 @@ import com.tech.oma.myshoes.dataobjects.Shoe;
 import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static com.tech.oma.myshoes.MainActivity.clearDim;
+import static com.tech.oma.myshoes.activities.MainActivity.clearDim;
 
 public class ShoeRecyclerAdapter extends RecyclerView.Adapter<ShoeRecyclerAdapter.ShoeViewHolder> {
 

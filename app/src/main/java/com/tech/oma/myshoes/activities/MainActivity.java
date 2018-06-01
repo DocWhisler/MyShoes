@@ -1,4 +1,4 @@
-package com.tech.oma.myshoes;
+package com.tech.oma.myshoes.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,9 +39,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tech.oma.myshoes.R;
 import com.tech.oma.myshoes.adapter.ShoeRecyclerAdapter;
 import com.tech.oma.myshoes.dataobjects.Shoe;
-import com.tech.oma.myshoes.dataobjects.IShoeDao;
 import com.tech.oma.myshoes.dataobjects.ShoeDao;
 import com.tech.oma.myshoes.listener.RecyclerItemClickListener;
 
@@ -143,6 +143,10 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                     case R.id.drawer_import_export:
                         Toast.makeText(mContext, "Import/Export", Toast.LENGTH_LONG).show();
                         return true;
+                    case R.id.drawer_listmanagement:
+                        Toast.makeText(mContext, "Import/Export", Toast.LENGTH_LONG).show();
+                        createListManagementPopUp();
+                        return true;
                     default:
                             return true;
                 }
@@ -161,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
                 if(inflater != null) {
                     container = (ViewGroup) inflater.inflate(R.layout.popupwindow__layout, null);
-                    createPopUpWindow(container);
+                    createAddPopUp(container);
                 }
             }
         });
@@ -209,30 +213,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
     public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_delete:
-                Iterator<Integer> iter = selectedIds.iterator();
-                while(iter.hasNext()) {
-                    int shoeId = iter.next();
-                    Shoe shoe = shoeDao.getShoe(shoeId);
-                    if(shoe != null && selectedIds.contains(shoe.getId()))
-                    {
-                        // remove file
-                        File file = new File(shoe.getImagePath());
-                        if (file.exists()){
-                            file.delete();
-                        }
-
-                        shoeDao.deleteShoe(shoe);
-                        iter.remove();
-                    }
-                }
-
-                this.shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
-                this.shoeRecyclerAdapter.setSelectedIds(this.selectedIds);
-
-                if(selectedIds.size() <= 0){
-                    actionMode.setTitle(""); //remove item count from action mode.
-                    actionMode.finish(); //hide action mode.
-                }
+                this.deleteSelectedShoes();
                 return true;
             case R.id.action_share:
                 Toast.makeText(mContext, "Share", Toast.LENGTH_LONG).show();
@@ -262,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
     }
 
     // PRIVATE METHODEN
-    private void createPopUpWindow(final ViewGroup container) {
+    private void createAddPopUp(final ViewGroup container) {
         // PopUpWindow initialising
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -328,6 +309,11 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
             }
         });
     }
+
+    private void createListManagementPopUp() {
+        startActivity(new Intent(getApplicationContext(), ListManagementActivity.class));
+    }
+
 
     private void applyDim(@NonNull ViewGroup parent, double dimAmount){
         Drawable dim = new ColorDrawable(Color.BLACK);
@@ -482,6 +468,33 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                 this.shoeRecyclerAdapter.setSelectedIds(selectedIds);
                 this.shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
             }
+        }
+    }
+
+    private void deleteSelectedShoes() {
+        Iterator<Integer> iter = selectedIds.iterator();
+        while(iter.hasNext()) {
+            int shoeId = iter.next();
+            Shoe shoe = shoeDao.getShoe(shoeId);
+            if(shoe != null && selectedIds.contains(shoe.getId()))
+            {
+                // remove file
+                File file = new File(shoe.getImagePath());
+                if (file.exists()){
+                    file.delete();
+                }
+
+                shoeDao.deleteShoe(shoe);
+                iter.remove();
+            }
+        }
+
+        this.shoeRecyclerAdapter.refresh(shoeDao.getAllShoes());
+        this.shoeRecyclerAdapter.setSelectedIds(this.selectedIds);
+
+        if(selectedIds.size() <= 0){
+            actionMode.setTitle(""); //remove item count from action mode.
+            actionMode.finish(); //hide action mode.
         }
     }
 }
