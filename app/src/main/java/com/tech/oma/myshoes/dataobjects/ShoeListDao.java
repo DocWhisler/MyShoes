@@ -60,7 +60,7 @@ public class ShoeListDao extends ShoeDbDao implements IShoeListDao {
 
     @Override
     public ShoeList createShoeList(String name, boolean aktiv) {
-        int id = this.getMaxId();
+        int id = this.getMaxId()+1;
         return new ShoeList(id, name, aktiv);
     }
 
@@ -80,14 +80,15 @@ public class ShoeListDao extends ShoeDbDao implements IShoeListDao {
 
             if(cursor.moveToFirst()) {
                 do {
-                    Boolean aktiv = cursor.getInt(5) == 1;
+                    int aktivNumber = cursor.getInt(4);
+                    boolean aktiv = aktivNumber > 0;
                     ShoeList shoeList = new ShoeList(
                             cursor.getInt(1),
                             cursor.getString(2),
                             aktiv);
 
                     shoeList.setOid(cursor.getString(0));
-                    shoeList.setCreated(new Date(cursor.getLong(7)));
+                    shoeList.setCreated(new Date(cursor.getLong(3)));
                     shoeLists.add(shoeList);
 
                 }while (cursor.moveToNext());

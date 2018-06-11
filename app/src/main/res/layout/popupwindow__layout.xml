@@ -21,7 +21,7 @@
             android:adjustViewBounds="true"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/popout_photo_view"
+            android:contentDescription="@string/popup_photo_view"
             android:scaleType="fitXY"
             android:src="@android:drawable/ic_menu_camera" />
     </LinearLayout>
@@ -60,7 +60,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/popwin_text_margin"
                             android:selectAllOnFocus="true"
-                            android:text="@string/popout_titel"
+                            android:text="@string/popup_titel"
                             android:inputType="text" />
                     </LinearLayout>
 
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:backgroundTint="@android:color/transparent"
-                        android:contentDescription="@string/popout_close_button"
+                        android:contentDescription="@string/popup_close_button"
                         android:src="@android:drawable/ic_menu_close_clear_cancel"
                         android:tint="@android:color/black"
                         android:visibility="visible" />
@@ -97,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:selectAllOnFocus="true"
-                        android:text="@string/popout_tag" />
+                        android:text="@string/popup_tag" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
@@ -113,7 +113,7 @@
                         android:layout_marginEnd="@dimen/popwin_text_margin"
                         android:inputType="numberDecimal"
                         android:selectAllOnFocus="true"
-                        android:text="@string/popout_price" />
+                        android:text="@string/popup_price" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -131,7 +131,7 @@
                     android:layout_marginEnd="@dimen/popwin_text_margin"
                     android:inputType="text"
                     android:selectAllOnFocus="true"
-                    android:text="@string/popout_description" />
+                    android:text="@string/popup_description" />
 
             </LinearLayout>
 
@@ -154,7 +154,7 @@
                         android:layout_marginStart="@dimen/popwin_margin_ok_capture"
                         android:clickable="true"
                         android:focusable="true"
-                        android:text="@string/popout_capture" />
+                        android:text="@string/popup_capture" />
 
                     <TextView
                         android:id="@+id/okBtn"
@@ -166,7 +166,7 @@
                         android:layout_marginEnd="@dimen/popwin_margin_ok_capture"
                         android:clickable="true"
                         android:focusable="true"
-                        android:text="@string/popout_ok" />
+                        android:text="@string/popup_ok" />
                 </RelativeLayout>
             </LinearLayout>
 
