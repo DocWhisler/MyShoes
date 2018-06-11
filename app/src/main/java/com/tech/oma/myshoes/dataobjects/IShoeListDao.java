@@ -8,6 +8,8 @@ public interface IShoeListDao {
 
     ShoeList createShoeList(String name, boolean aktiv);
 
+    ArrayList<ShoeList> getAllLists();
+
     ArrayList<ShoeList> getAktivLists();
 
     void saveShoeList(ShoeList shoeList);

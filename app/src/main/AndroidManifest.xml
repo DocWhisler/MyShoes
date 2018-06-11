@@ -28,9 +28,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+            android:resource="@xml/file_paths"></meta-data>
         </provider>
+
+        <activity android:name=".activities.ListManagementActivity"/>
+
     </application>
+
 
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 

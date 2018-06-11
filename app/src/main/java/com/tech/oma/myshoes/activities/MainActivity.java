@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
 
         // Custom Card Adapter
         this.shoeRecyclerAdapter = new ShoeRecyclerAdapter(mContext, shoeDao.getAllShoes());
-        shoeRecycleView.setAdapter(shoeRecyclerAdapter);
+        shoeRecycleView.setAdapter(this.shoeRecyclerAdapter);
 
         shoeRecycleView.addOnItemTouchListener(
             new RecyclerItemClickListener(this, shoeRecycleView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -144,11 +144,11 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
                         Toast.makeText(mContext, "Import/Export", Toast.LENGTH_LONG).show();
                         return true;
                     case R.id.drawer_listmanagement:
-                        Toast.makeText(mContext, "Import/Export", Toast.LENGTH_LONG).show();
-                        createListManagementPopUp();
+                        Toast.makeText(mContext, "ListManagement", Toast.LENGTH_LONG).show();
+                        createListManagementIntent();
                         return true;
                     default:
-                            return true;
+                        return true;
                 }
             }
         });
@@ -310,8 +310,9 @@ public class MainActivity extends AppCompatActivity implements ActionMode.Callba
         });
     }
 
-    private void createListManagementPopUp() {
-        startActivity(new Intent(getApplicationContext(), ListManagementActivity.class));
+    private void createListManagementIntent() {
+        Intent intent = new Intent(this, ListManagementActivity.class);
+        startActivity(intent);
     }
 
 

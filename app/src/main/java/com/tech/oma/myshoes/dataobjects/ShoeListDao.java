@@ -65,6 +65,46 @@ public class ShoeListDao extends ShoeDbDao implements IShoeListDao {
     }
 
     @Override
+    public ArrayList<ShoeList> getAllLists() {
+        ArrayList<ShoeList> shoeLists = new ArrayList<>();
+        String query = "SELECT " +
+                    LISTS_OID +
+                ", " + LISTS_ID +
+                ", " + LISTS_NAME +
+                ", " + LISTS_CREATED +
+                ", " + LISTS_AKTIV +
+                " FROM " + TABLE_LISTS;
+
+        if (database.isOpen()){
+            Cursor cursor = database.rawQuery(query, null);
+
+            if(cursor.moveToFirst()) {
+                do {
+                    Boolean aktiv = cursor.getInt(5) == 1;
+                    ShoeList shoeList = new ShoeList(
+                            cursor.getInt(1),
+                            cursor.getString(2),
+                            aktiv);
+
+                    shoeList.setOid(cursor.getString(0));
+                    shoeList.setCreated(new Date(cursor.getLong(7)));
+                    shoeLists.add(shoeList);
+
+                }while (cursor.moveToNext());
+            }
+        }
+        else {
+            Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
+            throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
+        }
+
+        if(shoeLists.size() > 1)
+            throw new Error("Es darf nur eine aktive liste geben");
+
+        return shoeLists;
+    }
+
+    @Override
     public ArrayList<ShoeList> getAktivLists() {
         ArrayList<ShoeList> shoeLists = new ArrayList<>();
         String query = "SELECT " +
