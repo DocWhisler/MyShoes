@@ -38,6 +38,10 @@ public class ShoeListRecyclerAdapter extends RecyclerView.Adapter<ShoeListRecycl
         return shoeLists.size();
     }
 
+    public void refresh(ArrayList<ShoeList> lists){
+        this.shoeLists = lists;
+    }
+
     //INNER CLASS Viewholder
     class ShoeListViewHolder extends RecyclerView.ViewHolder{
         private TextView tv;

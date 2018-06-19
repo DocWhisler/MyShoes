@@ -41,14 +41,15 @@ public class ShoeListDao extends ShoeDbDao implements IShoeListDao {
             Cursor cursor = database.rawQuery(query, null);
             if(cursor.moveToFirst()) {
 
-                Boolean aktiv = cursor.getInt(5) == 1;
+                int aktivNumber = cursor.getInt(4);
+                boolean aktiv = aktivNumber > 0;
                 shoeList = new ShoeList(
                         cursor.getInt(1),
                         cursor.getString(2),
                         aktiv);
 
                 shoeList.setOid(cursor.getString(0));
-                shoeList.setCreated(new Date(cursor.getLong(7)));
+                shoeList.setCreated(new Date(cursor.getLong(3)));
             }
         }
         else {
@@ -98,10 +99,6 @@ public class ShoeListDao extends ShoeDbDao implements IShoeListDao {
             Log.e(DBEXCEPTION, "Keine Verbindung zur Dantenbank");
             throw new RuntimeException(DBEXCEPTION + "Keine Verbindung zur Dantenbank");
         }
-
-        if(shoeLists.size() > 1)
-            throw new Error("Es darf nur eine aktive liste geben");
-
         return shoeLists;
     }
 
@@ -122,14 +119,15 @@ public class ShoeListDao extends ShoeDbDao implements IShoeListDao {
 
             if(cursor.moveToFirst()) {
                 do {
-                    Boolean aktiv = cursor.getInt(5) == 1;
+                    int aktivNumber = cursor.getInt(4);
+                    boolean aktiv = aktivNumber > 0;
                     ShoeList shoeList = new ShoeList(
                             cursor.getInt(1),
                             cursor.getString(2),
                             aktiv);
 
                     shoeList.setOid(cursor.getString(0));
-                    shoeList.setCreated(new Date(cursor.getLong(7)));
+                    shoeList.setCreated(new Date(cursor.getLong(3)));
                     shoeLists.add(shoeList);
 
                 }while (cursor.moveToNext());

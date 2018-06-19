@@ -10,15 +10,16 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 import android.view.ViewGroupOverlay;
-import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,11 @@ public class ListManagementActivity extends AppCompatActivity {
         this.mContext = getApplicationContext();
         this.shoeListDao = new ShoeListDao(mContext);
 
+        Toolbar mToolBar = (Toolbar) findViewById(R.id.lm_toolbar);
+        mToolBar.setTitle("Toolbar");
+        mToolBar.setNavigationIcon(R.drawable.ic_arrow_back_black);
+        setSupportActionBar(mToolBar);
+
         // Create ShoeList
         RecyclerView shoeListRecycleView = findViewById(R.id.lm_cardList);
         LinearLayoutManager lim = new LinearLayoutManager(this.mContext);
@@ -61,7 +67,10 @@ public class ListManagementActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.lm_toobar, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.lm_toobar, menu);
+
+
         return true;
     }
 
@@ -78,9 +87,11 @@ public class ListManagementActivity extends AppCompatActivity {
                 return true;
             case R.id.lm_action_delete:
                 Toast.makeText(mContext, "Delete", Toast.LENGTH_LONG).show();
+//                this.deleteList();
                 return true;
             case R.id.lm_action_edit:
                 Toast.makeText(mContext, "Edit", Toast.LENGTH_LONG).show();
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -106,8 +117,8 @@ public class ListManagementActivity extends AppCompatActivity {
         int height = dm.heightPixels;
 
         final PopupWindow popupWindow = new PopupWindow(container, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        popupWindow.setWidth((int) (width*.95));
-        popupWindow.setHeight((int) (height*.5));
+        popupWindow.setWidth((int) (width*.3));
+        popupWindow.setHeight((int) (height*.3));
         popupWindow.setAnimationStyle(R.style.style_popup_anim);
         popupWindow.showAtLocation(mCoordinatorLayout, Gravity.CENTER, 0, 0);
 
@@ -147,6 +158,7 @@ public class ListManagementActivity extends AppCompatActivity {
                 ShoeList newList = shoeListDao.createShoeList(name, false);
 
                 shoeListDao.saveShoeList(newList);
+                shoeListRecyclerAdapter.refresh(shoeListDao.getAllLists());
 
                 popupWindow.dismiss();
                 clearDim(root);

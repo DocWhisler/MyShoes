@@ -4,17 +4,17 @@
     tools:context="com.tech.oma.myshoes.activities.ListManagementActivity">
 
     <item
-        android:id="@+id/lm_action_edit"
-        android:title="@string/action_edit"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:id="@+id/lm_action_add"
+        android:title="@string/action_add"
+        android:icon="@android:drawable/ic_menu_add"
         android:enabled="true"
         android:visible="true"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/lm_action_add"
-        android:title="@string/action_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:id="@+id/lm_action_edit"
+        android:title="@string/action_edit"
+        android:icon="@android:drawable/ic_menu_edit"
         android:enabled="true"
         android:visible="true"
         app:showAsAction="ifRoom" />
@@ -25,5 +25,5 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:enabled="true"
         android:visible="true"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>
